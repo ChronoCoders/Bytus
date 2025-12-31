@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { DashboardPreview } from "@/components/ui/DashboardPreview";
 import { MobileAppMockup } from "@/components/ui/MobileAppMockup";
 import { Button } from "@/components/ui/button";
@@ -22,9 +23,11 @@ export function ProductPreview() {
               Seamlessly manage your digital and fiat assets across all devices. 
               Our intuitive dashboard and mobile app keep you in control, wherever you go.
             </p>
-            <Button variant="link" className="text-primary gap-2 text-lg">
-              Explore the Platform <ArrowRight className="w-4 h-4" />
-            </Button>
+            <Link href="/dashboard">
+              <Button variant="link" className="text-primary gap-2 text-lg">
+                Explore the Platform <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
 
