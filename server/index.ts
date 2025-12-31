@@ -29,8 +29,6 @@ export function log(message: string, source = "express") {
     second: "2-digit",
     hour12: true,
   });
-
-  
 }
 
 app.use((req, res, next) => {
