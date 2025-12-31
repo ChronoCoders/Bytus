@@ -39,7 +39,10 @@ export function DashboardActions() {
     <>
       <Dialog open={openDeposit} onOpenChange={setOpenDeposit}>
         <DialogTrigger asChild>
-          <Button variant="secondary" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground border-0 backdrop-blur-md">
+          <Button
+            variant="secondary"
+            className="bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground border-0 backdrop-blur-md"
+          >
             <ArrowUpRight className="w-4 h-4 mr-2" /> Deposit
           </Button>
         </DialogTrigger>
@@ -55,7 +58,11 @@ export function DashboardActions() {
               <Label htmlFor="amount-deposit" className="text-right">
                 Amount
               </Label>
-              <Input id="amount-deposit" defaultValue="$1,000.00" className="col-span-3" />
+              <Input
+                id="amount-deposit"
+                defaultValue="$1,000.00"
+                className="col-span-3"
+              />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="source" className="text-right">
@@ -74,7 +81,10 @@ export function DashboardActions() {
 
       <Dialog open={openSend} onOpenChange={setOpenSend}>
         <DialogTrigger asChild>
-          <Button variant="secondary" className="bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground border-0 backdrop-blur-md">
+          <Button
+            variant="secondary"
+            className="bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground border-0 backdrop-blur-md"
+          >
             <ArrowDownLeft className="w-4 h-4 mr-2" /> Withdraw
           </Button>
         </DialogTrigger>
@@ -90,13 +100,21 @@ export function DashboardActions() {
               <Label htmlFor="amount-withdraw" className="text-right">
                 Amount
               </Label>
-              <Input id="amount-withdraw" defaultValue="$500.00" className="col-span-3" />
+              <Input
+                id="amount-withdraw"
+                defaultValue="$500.00"
+                className="col-span-3"
+              />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="destination" className="text-right">
                 To
               </Label>
-              <Input id="destination" placeholder="Wallet Address or Email" className="col-span-3" />
+              <Input
+                id="destination"
+                placeholder="Wallet Address or Email"
+                className="col-span-3"
+              />
             </div>
           </div>
           <DialogFooter>
@@ -140,7 +158,11 @@ export function SendMoneyButton() {
             <Label htmlFor="recipient" className="text-right">
               Recipient
             </Label>
-            <Input id="recipient" placeholder="@username or address" className="col-span-3" />
+            <Input
+              id="recipient"
+              placeholder="@username or address"
+              className="col-span-3"
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="asset" className="text-right">
@@ -188,17 +210,22 @@ export function AddAssetButton() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-           <div className="grid grid-cols-2 gap-4">
-              {['Solana', 'Cardano', 'Polkadot', 'Avalanche'].map(coin => (
-                <div key={coin} className="border p-4 rounded-lg hover:bg-accent cursor-pointer flex items-center justify-between group">
-                  <span className="font-medium">{coin}</span>
-                  <Plus className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
-                </div>
-              ))}
-           </div>
+          <div className="grid grid-cols-2 gap-4">
+            {["Solana", "Cardano", "Polkadot", "Avalanche"].map((coin) => (
+              <div
+                key={coin}
+                className="border p-4 rounded-lg hover:bg-accent cursor-pointer flex items-center justify-between group"
+              >
+                <span className="font-medium">{coin}</span>
+                <Plus className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
+              </div>
+            ))}
+          </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,13 +1,13 @@
-import { 
-  LayoutDashboard, 
-  Wallet, 
-  ArrowRightLeft, 
-  CreditCard, 
-  Settings, 
-  Bell, 
-  Search, 
-  TrendingUp, 
-  DollarSign
+import {
+  LayoutDashboard,
+  Wallet,
+  ArrowRightLeft,
+  CreditCard,
+  Settings,
+  Bell,
+  Search,
+  TrendingUp,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -59,11 +59,11 @@ export function DashboardPreview() {
               { icon: CreditCard, label: "Cards" },
               { icon: Settings, label: "Settings" },
             ].map((item, i) => (
-              <div 
+              <div
                 key={i}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  item.active 
-                    ? "bg-primary/10 text-primary" 
+                  item.active
+                    ? "bg-primary/10 text-primary"
                     : "text-muted-foreground"
                 }`}
               >
@@ -79,9 +79,14 @@ export function DashboardPreview() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-foreground">Dashboard</h2>
-              <p className="text-xs text-muted-foreground">Welcome back, John!</p>
+              <p className="text-xs text-muted-foreground">
+                Welcome back, John!
+              </p>
             </div>
-            <Button size="sm" className="h-8 text-xs bg-primary text-primary-foreground">
+            <Button
+              size="sm"
+              className="h-8 text-xs bg-primary text-primary-foreground"
+            >
               Add Funds
             </Button>
           </div>
@@ -89,11 +94,15 @@ export function DashboardPreview() {
           <div className="grid grid-cols-2 gap-4 mb-6">
             <Card className="shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
-                <CardTitle className="text-xs font-medium text-muted-foreground">Total Balance</CardTitle>
+                <CardTitle className="text-xs font-medium text-muted-foreground">
+                  Total Balance
+                </CardTitle>
                 <DollarSign className="h-3 w-3 text-muted-foreground" />
               </CardHeader>
               <CardContent className="p-4 pt-0">
-                <div className="text-lg font-bold text-foreground">$45,231.89</div>
+                <div className="text-lg font-bold text-foreground">
+                  $45,231.89
+                </div>
                 <p className="text-[10px] text-green-600 flex items-center gap-1 mt-1">
                   <TrendingUp className="w-3 h-3" />
                   +20.1%
@@ -102,12 +111,18 @@ export function DashboardPreview() {
             </Card>
             <Card className="shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
-                <CardTitle className="text-xs font-medium text-muted-foreground">Spending</CardTitle>
+                <CardTitle className="text-xs font-medium text-muted-foreground">
+                  Spending
+                </CardTitle>
                 <CreditCard className="h-3 w-3 text-muted-foreground" />
               </CardHeader>
               <CardContent className="p-4 pt-0">
-                <div className="text-lg font-bold text-foreground">$3,240.00</div>
-                <p className="text-[10px] text-muted-foreground mt-1">42 txns</p>
+                <div className="text-lg font-bold text-foreground">
+                  $3,240.00
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  42 txns
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -121,9 +136,23 @@ export function DashboardPreview() {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data}>
                     <defs>
-                      <linearGradient id="colorTotalPreview" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                      <linearGradient
+                        id="colorTotalPreview"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="hsl(var(--primary))"
+                          stopOpacity={0.3}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="hsl(var(--primary))"
+                          stopOpacity={0}
+                        />
                       </linearGradient>
                     </defs>
                     <Area
@@ -140,7 +169,7 @@ export function DashboardPreview() {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Overlay to simulate "more content below" */}
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>

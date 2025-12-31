@@ -49,11 +49,13 @@ function ScrollToTop() {
 
 function Router() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      }
+    >
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/features" component={FeaturesPage} />

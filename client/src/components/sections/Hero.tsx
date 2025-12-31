@@ -13,7 +13,6 @@ export function Hero() {
 
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -33,7 +32,7 @@ export function Hero() {
             </h1>
 
             <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
-              Bridge the gap between traditional finance and digital assets. 
+              Bridge the gap between traditional finance and digital assets.
               Secure, compliant, and instant global transactions for everyone.
             </p>
 
@@ -44,7 +43,10 @@ export function Hero() {
                 </Button>
               </Link>
               <Link href="/features#business">
-                <Button variant="outline" className="h-14 px-8 rounded-full text-lg border-border text-foreground hover:bg-muted">
+                <Button
+                  variant="outline"
+                  className="h-14 px-8 rounded-full text-lg border-border text-foreground hover:bg-muted"
+                >
                   For Business
                 </Button>
               </Link>
@@ -69,12 +71,16 @@ export function Hero() {
             className="relative"
           >
             <div className="relative z-10 flex items-center justify-center">
-               <GlobeVisualization />
-              
+              <GlobeVisualization />
+
               {/* Floating Elements for depth */}
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="absolute top-10 right-0 lg:right-10 bg-card/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-border max-w-[200px] z-20"
               >
                 <div className="flex items-center gap-3 mb-2">
@@ -82,33 +88,45 @@ export function Hero() {
                     <ArrowRight className="w-4 h-4 -rotate-45" />
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Received</div>
-                    <div className="text-sm font-bold text-foreground">+ $1,250.00</div>
+                    <div className="text-xs text-muted-foreground">
+                      Received
+                    </div>
+                    <div className="text-sm font-bold text-foreground">
+                      + $1,250.00
+                    </div>
                   </div>
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1,
+                }}
                 className="absolute bottom-10 left-0 lg:left-10 bg-card/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-border z-20"
               >
-                 <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary">
                     <Globe className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Global Transfer</div>
-                    <div className="text-sm font-bold text-foreground">Instant</div>
+                    <div className="text-xs text-muted-foreground">
+                      Global Transfer
+                    </div>
+                    <div className="text-sm font-bold text-foreground">
+                      Instant
+                    </div>
                   </div>
                 </div>
               </motion.div>
             </div>
-            
+
             {/* Decor blob */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10" />
           </motion.div>
-
         </div>
       </div>
     </section>

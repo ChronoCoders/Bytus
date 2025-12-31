@@ -14,7 +14,9 @@ export function About() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-sm font-bold tracking-widest text-accent uppercase mb-3">Our Mission</h2>
+            <h2 className="text-sm font-bold tracking-widest text-accent uppercase mb-3">
+              Our Mission
+            </h2>
             <h3 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">
               Bridging the gap between <br />
               traditional finance and digital assets.
@@ -23,30 +25,37 @@ export function About() {
 
           <div className="grid md:grid-cols-2 gap-12 mb-16">
             <motion.div
-               initial={{ opacity: 0, y: 20 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.6, delay: 0.1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <h4 className="text-xl font-bold mb-4 text-primary">The Challenge</h4>
+              <h4 className="text-xl font-bold mb-4 text-primary">
+                The Challenge
+              </h4>
               <p className="text-muted-foreground leading-relaxed">
-                The cryptocurrency market is fragmented, slow, and complex. 
-                Users face hurdles with wallet management, security keys, and regulatory uncertainty. 
-                Traditional banks are hesitant to engage, leaving a gap for a secure, compliant solution.
+                The cryptocurrency market is fragmented, slow, and complex.
+                Users face hurdles with wallet management, security keys, and
+                regulatory uncertainty. Traditional banks are hesitant to
+                engage, leaving a gap for a secure, compliant solution.
               </p>
             </motion.div>
-            
+
             <motion.div
-               initial={{ opacity: 0, y: 20 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.6, delay: 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h4 className="text-xl font-bold mb-4 text-primary">The Bytus Solution</h4>
+              <h4 className="text-xl font-bold mb-4 text-primary">
+                The Bytus Solution
+              </h4>
               <p className="text-muted-foreground leading-relaxed">
-                We are building a regulated cryptocurrency banking layer that merges traditional 
-                financial infrastructure with blockchain efficiency. Through a permissioned PoA blockchain, 
-                we ensure fast finality, predictable fees, and full regulatory compatibility.
+                We are building a regulated cryptocurrency banking layer that
+                merges traditional financial infrastructure with blockchain
+                efficiency. Through a permissioned PoA blockchain, we ensure
+                fast finality, predictable fees, and full regulatory
+                compatibility.
               </p>
             </motion.div>
           </div>
@@ -58,30 +67,47 @@ export function About() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mb-16 border border-border bg-card rounded-2xl p-8 md:p-12 text-left"
           >
-            <h3 className="text-2xl font-bold mb-6 text-foreground text-center">What Bytus Is Not</h3>
+            <h3 className="text-2xl font-bold mb-6 text-foreground text-center">
+              What Bytus Is Not
+            </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="flex gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-destructive mt-2.5 shrink-0" />
                 <p className="text-muted-foreground">
-                  <span className="font-semibold text-foreground">Not a DeFi Protocol:</span> We focus on regulated banking operations, not experimental finance.
+                  <span className="font-semibold text-foreground">
+                    Not a DeFi Protocol:
+                  </span>{" "}
+                  We focus on regulated banking operations, not experimental
+                  finance.
                 </p>
               </div>
               <div className="flex gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-destructive mt-2.5 shrink-0" />
                 <p className="text-muted-foreground">
-                  <span className="font-semibold text-foreground">Not a Yield Farm:</span> Returns are driven by real economic utility, not inflationary token printing.
+                  <span className="font-semibold text-foreground">
+                    Not a Yield Farm:
+                  </span>{" "}
+                  Returns are driven by real economic utility, not inflationary
+                  token printing.
                 </p>
               </div>
               <div className="flex gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-destructive mt-2.5 shrink-0" />
                 <p className="text-muted-foreground">
-                  <span className="font-semibold text-foreground">Not an Algorithmic Stablecoin:</span> We use proven, audited collateralization methods.
+                  <span className="font-semibold text-foreground">
+                    Not an Algorithmic Stablecoin:
+                  </span>{" "}
+                  We use proven, audited collateralization methods.
                 </p>
               </div>
               <div className="flex gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-destructive mt-2.5 shrink-0" />
                 <p className="text-muted-foreground">
-                  <span className="font-semibold text-foreground">Not a Speculative Network:</span> Value is derived from infrastructure usage and locking requirements.
+                  <span className="font-semibold text-foreground">
+                    Not a Speculative Network:
+                  </span>{" "}
+                  Value is derived from infrastructure usage and locking
+                  requirements.
                 </p>
               </div>
             </div>
@@ -95,12 +121,15 @@ export function About() {
             className="bg-primary rounded-3xl p-12 text-center text-primary-foreground overflow-hidden relative"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-            
+
             <div className="relative z-10">
-              <h3 className="text-3xl font-bold mb-6">Ready to join the future of banking?</h3>
+              <h3 className="text-3xl font-bold mb-6">
+                Ready to join the future of banking?
+              </h3>
               <p className="text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-                Join thousands of users and businesses who are already experiencing the speed, 
-                security, and freedom of the Bytus ecosystem.
+                Join thousands of users and businesses who are already
+                experiencing the speed, security, and freedom of the Bytus
+                ecosystem.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/onboarding/signup">

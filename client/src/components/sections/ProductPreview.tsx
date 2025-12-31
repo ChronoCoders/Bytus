@@ -20,8 +20,9 @@ export function ProductPreview() {
               A Unified Financial Experience
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-              Seamlessly manage your digital and fiat assets across all devices. 
-              Our intuitive dashboard and mobile app keep you in control, wherever you go.
+              Seamlessly manage your digital and fiat assets across all devices.
+              Our intuitive dashboard and mobile app keep you in control,
+              wherever you go.
             </p>
             <Link href="/dashboard">
               <Button variant="link" className="text-primary gap-2 text-lg">
@@ -46,7 +47,7 @@ export function ProductPreview() {
               </div>
 
               {/* Mobile App Overlay - Positioned to overlap */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20, y: 20 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true }}
@@ -56,7 +57,7 @@ export function ProductPreview() {
                 <MobileAppMockup />
               </motion.div>
             </div>
-            
+
             {/* Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10" />
           </motion.div>

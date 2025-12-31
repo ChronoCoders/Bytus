@@ -14,7 +14,7 @@ export default function Signup() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
@@ -26,23 +26,32 @@ export default function Signup() {
     <OnboardingLayout step={1}>
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground">Create your account</h2>
-          <p className="text-muted-foreground mt-2 text-sm">Start your journey with Bytus today.</p>
+          <h2 className="text-2xl font-bold text-foreground">
+            Create your account
+          </h2>
+          <p className="text-muted-foreground mt-2 text-sm">
+            Start your journey with Bytus today.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email address</Label>
-            <Input id="email" type="email" placeholder="john@example.com" required />
+            <Input
+              id="email"
+              type="email"
+              placeholder="john@example.com"
+              required
+            />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
-              <Input 
-                id="password" 
-                type={showPassword ? "text" : "password"} 
-                required 
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                required
                 className="pr-10"
               />
               <button
@@ -50,19 +59,30 @@ export default function Signup() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
-            <p className="text-xs text-muted-foreground">Must be at least 8 characters with 1 symbol.</p>
+            <p className="text-xs text-muted-foreground">
+              Must be at least 8 characters with 1 symbol.
+            </p>
           </div>
 
           <div className="pt-2">
-            <Button type="submit" className="w-full h-11 text-base group" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full h-11 text-base group"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <>
-                  Continue <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Continue{" "}
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </Button>
@@ -74,16 +94,26 @@ export default function Signup() {
             <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" type="button" className="h-10 text-muted-foreground">
-             Google
+          <Button
+            variant="outline"
+            type="button"
+            className="h-10 text-muted-foreground"
+          >
+            Google
           </Button>
-          <Button variant="outline" type="button" className="h-10 text-muted-foreground">
-             Apple
+          <Button
+            variant="outline"
+            type="button"
+            className="h-10 text-muted-foreground"
+          >
+            Apple
           </Button>
         </div>
       </div>
