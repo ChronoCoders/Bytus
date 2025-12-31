@@ -124,6 +124,9 @@ export function Navbar() {
                   Launch App <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
+              <div className="flex justify-center mt-2">
+                <ModeToggle />
+              </div>
             </div>
           </motion.div>
         )}
