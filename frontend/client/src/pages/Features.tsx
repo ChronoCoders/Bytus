@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ArrowLeft, Check, Shield, Code, Server, Zap, Globe, FileJson } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SEO } from "@/components/SEO";
 
 export default function FeaturesPage() {
 
@@ -78,7 +79,7 @@ export default function FeaturesPage() {
       icon: FileJson,
       details: [
         "Multi-user access controls",
-        "Yield generation (Compound V3)",
+        "Treasury Optimization (Compound V3)",
         "Automated rebalancing",
         "Audit trail logs"
       ]
@@ -87,6 +88,11 @@ export default function FeaturesPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Enterprise Features | API, Webhooks & Treasury"
+        description="Explore Bytus features: RESTful API for developers, Merchant Gateway for businesses, and comprehensive Treasury Management tools."
+        keywords={["payment api", "webhooks", "merchant gateway", "compliance tools", "treasury management"]}
+      />
       <Navbar />
       
       <main className="pt-24 pb-20">

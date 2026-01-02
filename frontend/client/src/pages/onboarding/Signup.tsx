@@ -5,21 +5,46 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
+import { api } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Signup() {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [companyName, setCompanyName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      await api.signup({
+        email,
+        password,
+        company_name: companyName,
+        business_type: "Enterprise",
+      });
+
+      toast({
+        title: "Account created",
+        description: "Your business account has been created successfully.",
+      });
+
+      setLocation("/login");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not create account. Please try again.";
+      toast({
+        title: "Signup failed",
+        description: message,
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-      setLocation("/onboarding/verify-document");
-    }, 1500);
+    }
   };
 
   return (
@@ -33,23 +58,40 @@ export default function Signup() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="company">Company Name</Label>
-            <Input id="company" placeholder="Acme Corp Inc." autoComplete="organization" required />
+            <Input 
+              id="company" 
+              placeholder="Acme Corp Inc." 
+              autoComplete="organization" 
+              required 
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="email">Work Email</Label>
-            <Input id="email" type="email" placeholder="name@company.com" autoComplete="email" required />
+            <Input 
+              id="email" 
+              type="email" 
+              placeholder="name@company.com" 
+              autoComplete="email" 
+              required 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
-              <Input 
-                id="password" 
-                type={showPassword ? "text" : "password"} 
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
-                required 
+                required
                 className="pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 type="button"

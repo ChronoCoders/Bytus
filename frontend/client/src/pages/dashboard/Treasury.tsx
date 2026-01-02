@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   BadgeDollarSign,
   Landmark,
@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { DashboardActions } from "@/components/dashboard/Actions";
 import { Button } from "@/components/ui/button";
+import { TreasuryLockStatus } from "@/components/dashboard/TreasuryLockStatus";
 
 const initialAssets = [
   { 
@@ -24,7 +25,7 @@ const initialAssets = [
     color: "bg-blue-100 text-blue-600"
   },
   { 
-    name: "Ethereum Liquidity", 
+    name: "Base L2 Liquidity", 
     protocol: "Uniswap V3", 
     balance: "45.2 ETH", 
     value: 125400.00, 
@@ -89,16 +90,19 @@ export default function TreasuryPage() {
              </CardContent>
            </Card>
 
-           <Card>
-             <CardHeader>
-               <CardTitle>Yield Performance</CardTitle>
-               <CardDescription>Average APY across all positions</CardDescription>
-             </CardHeader>
-             <CardContent className="flex flex-col items-center justify-center h-[160px] text-muted-foreground">
-               <div className="text-4xl font-bold text-green-600 mb-2">5.2%</div>
-               <p className="text-sm">+$2,450 est. monthly revenue</p>
-             </CardContent>
-           </Card>
+           <div className="space-y-6">
+             <TreasuryLockStatus lockedAmount={62500} totalAum={totalNetWorth} />
+             
+             <Card>
+               <CardHeader className="pb-2">
+                 <CardTitle className="text-sm font-medium">Yield Performance</CardTitle>
+               </CardHeader>
+               <CardContent>
+                 <div className="text-2xl font-bold text-green-600 mb-1">5.2%</div>
+                 <p className="text-xs text-muted-foreground">+$2,450 est. monthly revenue</p>
+               </CardContent>
+             </Card>
+           </div>
         </div>
 
         {/* Assets List */}

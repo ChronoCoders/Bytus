@@ -9,7 +9,7 @@ import {
 export function Ecosystem() {
   const partners = [
     { name: "Global Banks", icon: Building2, desc: "Direct fiat rails" },
-    { name: "Payment Processors", icon: Network, desc: "Instant settlement" },
+    { name: "Base L2", icon: Network, desc: "Primary Settlement Layer" },
     { name: "DeFi Protocols", icon: Code2, desc: "Yield generation" },
     { name: "Auditors", icon: Globe, desc: "Compliance & Security" },
   ];

@@ -3,6 +3,7 @@ frontend/node_modules/
 frontend/dist/
 frontend/.local/
 frontend/.config/
+frontend/.env.local
 
 # Backend
 backend/target/
