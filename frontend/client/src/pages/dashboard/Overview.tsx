@@ -9,9 +9,11 @@ import {
   TrendingUp,
   CreditCard,
   DollarSign,
-  Activity
+  Activity,
+  Loader2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/lib/api";
 
 import { SendMoneyButton } from "@/components/dashboard/Actions";
 import { ProcessingVolumeChart } from "@/components/dashboard/ProcessingVolumeChart";
@@ -22,41 +24,62 @@ import { cn } from "@/lib/utils";
 export default function DashboardOverview() {
   const { toast } = useToast();
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // Enterprise metrics
-  const [monthlyVolume, setMonthlyVolume] = useState(1245000.00);
-  const [txCount, setTxCount] = useState(1452);
-  const [pendingSettlement, setPendingSettlement] = useState(45230.50);
+  const [monthlyVolume, setMonthlyVolume] = useState(0);
+  const [txCount, setTxCount] = useState(0);
+  const [pendingSettlement, setPendingSettlement] = useState(0);
+  const [busLocked, setBusLocked] = useState(0);
+  const [busRequired, setBusRequired] = useState(0);
+
+  const fetchDashboardData = async () => {
+    try {
+      const data = await api.getDashboardOverview();
+      setMonthlyVolume(data.monthly_volume);
+      setTxCount(data.transaction_count);
+      setPendingSettlement(data.pending_settlement);
+      setBusLocked(data.bus_locked);
+      setBusRequired(data.bus_required);
+    } catch (error) {
+      toast({
+        title: "Failed to load dashboard data",
+        description: error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Simulate live transaction activity
-      if (Math.random() > 0.6) {
-        const amount = Math.random() * 500;
-        setMonthlyVolume(prev => prev + amount);
-        setPendingSettlement(prev => prev + amount);
-        setTxCount(prev => prev + 1);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
+    fetchDashboardData();
   }, []);
 
-  const handleSync = () => {
+  const handleSync = async () => {
     setIsSyncing(true);
+    await fetchDashboardData();
     setTimeout(() => {
       setIsSyncing(false);
       toast({
         title: "Data Synced",
-        description: "Merchant ledger updated from the blockchain.",
+        description: "Dashboard updated with latest data.",
       });
-    }, 2000);
+    }, 500);
   };
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-[60vh]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
@@ -77,7 +100,6 @@ export default function DashboardOverview() {
           </div>
         </div>
 
-        {/* Enterprise Stats Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className="shadow-xs hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -95,7 +117,7 @@ export default function DashboardOverview() {
             </CardContent>
           </Card>
           
-          <BusLockStatus lockedAmount={15000} requiredAmount={12500} processingVolume={monthlyVolume} />
+          <BusLockStatus lockedAmount={busLocked} requiredAmount={busRequired} processingVolume={monthlyVolume} />
           
           <Card className="shadow-xs hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -105,7 +127,7 @@ export default function DashboardOverview() {
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{txCount.toLocaleString()}</div>
               <p className="text-xs text-muted-foreground mt-1">
-                ~48 transactions per day
+                This month
               </p>
             </CardContent>
           </Card>
@@ -127,14 +149,10 @@ export default function DashboardOverview() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-          {/* Main Chart */}
           <ProcessingVolumeChart />
-
-          {/* Settlement Schedule */}
           <SettlementSchedule />
         </div>
         
-        {/* Recent Transactions - Merchant View */}
         <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Recent Payments</CardTitle>

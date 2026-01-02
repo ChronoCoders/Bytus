@@ -15,7 +15,7 @@ pub fn create_router(pool: PgPool) -> Router {
     let protected_routes = Router::new()
         .route(
             "/api/dashboard/overview",
-            get(handlers::dashboard::get_overview),
+            get(handlers::dashboard::get_dashboard_overview),
         )
         .route(
             "/api/transactions",
