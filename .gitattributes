@@ -1,0 +1,17 @@
+# Default: always use LF
+* text=auto eol=lf
+
+# Explicitly enforce LF for common files
+*.js   text eol=lf
+*.ts   text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.sh   text eol=lf
+*.css  text eol=lf
+*.html text eol=lf
+
+# Windows-only scripts (if any)
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
