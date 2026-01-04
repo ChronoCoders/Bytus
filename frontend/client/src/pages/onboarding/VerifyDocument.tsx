@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { OnboardingLayout } from "@/components/onboarding/OnboardingLayout";
 import { Button } from "@/components/ui/button";
-import { Loader2, UploadCloud, FileCheck, ArrowRight, Building } from "lucide-react";
+import {
+  Loader2,
+  UploadCloud,
+  FileCheck,
+  ArrowRight,
+  Building,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function VerifyDocument() {
@@ -53,30 +59,34 @@ export default function VerifyDocument() {
           <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
             <Building className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-bold text-foreground">Verify Business Entity</h2>
+          <h2 className="text-2xl font-bold text-foreground">
+            Verify Business Entity
+          </h2>
           <p className="text-muted-foreground mt-2 text-sm">
             Please upload your Certificate of Incorporation or Business License.
           </p>
         </div>
 
-        <div 
+        <div
           className={cn(
             "relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200",
-            dragActive ? "border-primary bg-primary/5" : "border-border hover:bg-muted/50",
-            file ? "bg-green-500/10 border-green-500/30" : ""
+            dragActive
+              ? "border-primary bg-primary/5"
+              : "border-border hover:bg-muted/50",
+            file ? "bg-green-500/10 border-green-500/30" : "",
           )}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
         >
-          <input 
-            type="file" 
+          <input
+            type="file"
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             onChange={handleChange}
             accept="image/*,.pdf"
           />
-          
+
           <div className="flex flex-col items-center justify-center gap-4">
             {file ? (
               <>
@@ -84,8 +94,12 @@ export default function VerifyDocument() {
                   <FileCheck className="w-8 h-8" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">{file.name}</p>
-                  <p className="text-xs text-green-600 dark:text-green-400 mt-1">Ready to upload</p>
+                  <p className="text-sm font-medium text-foreground">
+                    {file.name}
+                  </p>
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                    Ready to upload
+                  </p>
                 </div>
               </>
             ) : (
@@ -94,8 +108,12 @@ export default function VerifyDocument() {
                   <UploadCloud className="w-8 h-8" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">Click or drag file to upload</p>
-                  <p className="text-xs text-muted-foreground mt-1">PDF, JPG or PNG (max. 10MB)</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Click or drag file to upload
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    PDF, JPG or PNG (max. 10MB)
+                  </p>
                 </div>
               </>
             )}
@@ -103,8 +121,8 @@ export default function VerifyDocument() {
         </div>
 
         <div className="pt-2">
-          <Button 
-            className="w-full h-11 text-base group" 
+          <Button
+            className="w-full h-11 text-base group"
             disabled={!file || isLoading}
             onClick={handleContinue}
           >
@@ -115,7 +133,8 @@ export default function VerifyDocument() {
               </div>
             ) : (
               <>
-                Verify Document <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Verify Document{" "}
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </>
             )}
           </Button>

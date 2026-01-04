@@ -40,27 +40,34 @@ export function CookieBanner() {
           <div className="container mx-auto max-w-5xl">
             <div className="bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-lg p-6 md:flex items-center justify-between gap-6 ring-1 ring-black/5 dark:ring-white/10">
               <div className="flex-1 mb-4 md:mb-0">
-                <h3 className="text-lg font-semibold mb-2">We value your privacy</h3>
+                <h3 className="text-lg font-semibold mb-2">
+                  We value your privacy
+                </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies. Read our{" "}
+                  We use cookies to enhance your browsing experience, serve
+                  personalized content, and analyze our traffic. By clicking
+                  "Accept All", you consent to our use of cookies. Read our{" "}
                   <Link href="/cookies">
-                    <a className="text-primary hover:underline underline-offset-4">Cookie Policy</a>
+                    <a className="text-primary hover:underline underline-offset-4">
+                      Cookie Policy
+                    </a>
                   </Link>{" "}
                   and{" "}
                   <Link href="/privacy">
-                    <a className="text-primary hover:underline underline-offset-4">Privacy Policy</a>
-                  </Link>.
+                    <a className="text-primary hover:underline underline-offset-4">
+                      Privacy Policy
+                    </a>
+                  </Link>
+                  .
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 min-w-fit">
                 <Button variant="outline" onClick={handleDecline}>
                   Decline
                 </Button>
-                <Button onClick={handleAccept}>
-                  Accept All
-                </Button>
+                <Button onClick={handleAccept}>Accept All</Button>
               </div>
-              <button 
+              <button
                 onClick={() => setIsVisible(false)}
                 className="absolute top-4 right-4 md:hidden text-muted-foreground hover:text-foreground"
               >

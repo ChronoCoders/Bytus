@@ -7,21 +7,24 @@ export function IntegrationOptions() {
     {
       icon: Code2,
       title: "Rest API",
-      description: "Direct integration for custom platforms with full control over the payment experience.",
-      action: "Read Docs"
+      description:
+        "Direct integration for custom platforms with full control over the payment experience.",
+      action: "Read Docs",
     },
     {
       icon: Plug,
       title: "Plugins",
-      description: "Pre-built plugins for WooCommerce, Magento, Shopify, and other major platforms.",
-      action: "View Plugins"
+      description:
+        "Pre-built plugins for WooCommerce, Magento, Shopify, and other major platforms.",
+      action: "View Plugins",
     },
     {
       icon: ShoppingCart,
       title: "Hosted Checkout",
-      description: "No-code payment pages. Just generate a link and start accepting crypto immediately.",
-      action: "Start Now"
-    }
+      description:
+        "No-code payment pages. Just generate a link and start accepting crypto immediately.",
+      action: "Start Now",
+    },
   ];
 
   return (
@@ -38,7 +41,8 @@ export function IntegrationOptions() {
               Seamless Integration
             </h2>
             <p className="text-muted-foreground text-lg">
-              Choose the integration method that fits your technical stack and business needs.
+              Choose the integration method that fits your technical stack and
+              business needs.
             </p>
           </motion.div>
         </div>
@@ -60,7 +64,10 @@ export function IntegrationOptions() {
               <p className="text-muted-foreground mb-6 h-20">
                 {option.description}
               </p>
-              <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <Button
+                variant="outline"
+                className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+              >
                 {option.action} <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </motion.div>

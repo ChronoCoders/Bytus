@@ -95,8 +95,7 @@
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
     "zod": "^3.25.76",
-    "zod-validation-error": "^4.0.2",
-    "express-rate-limit": "^8.2.1"
+    "zod-validation-error": "^4.0.2"
   },
   "devDependencies": {
     "@types/connect-pg-simple": "^7.0.3",
@@ -108,7 +107,8 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@types/ws": "^8.5.13",
-    "drizzle-kit": "^0.31.8"
+    "drizzle-kit": "^0.31.8",
+    "prettier": "^3.7.4"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"

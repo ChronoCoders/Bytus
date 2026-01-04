@@ -36,7 +36,10 @@ export default function Signup() {
 
       setLocation("/login");
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Could not create account. Please try again.";
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Could not create account. Please try again.";
       toast({
         title: "Signup failed",
         description: message,
@@ -51,18 +54,22 @@ export default function Signup() {
     <OnboardingLayout step={1}>
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground">Register your Business</h2>
-          <p className="text-muted-foreground mt-2 text-sm">Create a merchant account to start accepting payments.</p>
+          <h2 className="text-2xl font-bold text-foreground">
+            Register your Business
+          </h2>
+          <p className="text-muted-foreground mt-2 text-sm">
+            Create a merchant account to start accepting payments.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="company">Company Name</Label>
-            <Input 
-              id="company" 
-              placeholder="Acme Corp Inc." 
-              autoComplete="organization" 
-              required 
+            <Input
+              id="company"
+              placeholder="Acme Corp Inc."
+              autoComplete="organization"
+              required
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
             />
@@ -70,12 +77,12 @@ export default function Signup() {
 
           <div className="space-y-2">
             <Label htmlFor="email">Work Email</Label>
-            <Input 
-              id="email" 
-              type="email" 
-              placeholder="name@company.com" 
-              autoComplete="email" 
-              required 
+            <Input
+              id="email"
+              type="email"
+              placeholder="name@company.com"
+              autoComplete="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -98,19 +105,30 @@ export default function Signup() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
-            <p className="text-xs text-muted-foreground">Must be at least 8 characters.</p>
+            <p className="text-xs text-muted-foreground">
+              Must be at least 8 characters.
+            </p>
           </div>
 
           <div className="pt-2">
-            <Button type="submit" className="w-full h-11 text-base group" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full h-11 text-base group"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <>
-                  Continue <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Continue{" "}
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </Button>
@@ -127,7 +145,9 @@ export default function Signup() {
         </div>
 
         <div className="text-center">
-           <a href="#" className="text-sm text-primary hover:underline">Contact Sales for Enterprise Plans</a>
+          <a href="#" className="text-sm text-primary hover:underline">
+            Contact Sales for Enterprise Plans
+          </a>
         </div>
       </div>
     </OnboardingLayout>

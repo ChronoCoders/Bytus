@@ -27,7 +27,8 @@ export default function Login() {
       });
       window.location.href = "/dashboard";
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Invalid email or password";
+      const message =
+        error instanceof Error ? error.message : "Invalid email or password";
       toast({
         title: "Login failed",
         description: message,
@@ -46,7 +47,13 @@ export default function Login() {
             <Logo className="text-3xl" />
           </Link>
           <div className="text-sm text-muted-foreground">
-            Don't have an account? <Link href="/onboarding/signup" className="text-primary font-medium hover:underline">Sign up</Link>
+            Don't have an account?{" "}
+            <Link
+              href="/onboarding/signup"
+              className="text-primary font-medium hover:underline"
+            >
+              Sign up
+            </Link>
           </div>
         </div>
       </header>
@@ -55,19 +62,23 @@ export default function Login() {
         <div className="w-full max-w-md bg-card rounded-2xl shadow-xl shadow-primary/5 border border-border p-8">
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-foreground">Welcome back</h2>
-              <p className="text-muted-foreground mt-2 text-sm">Log in to your Bytus account.</p>
+              <h2 className="text-2xl font-bold text-foreground">
+                Welcome back
+              </h2>
+              <p className="text-muted-foreground mt-2 text-sm">
+                Log in to your Bytus account.
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="john@example.com" 
-                  autoComplete="email" 
-                  required 
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  autoComplete="email"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -76,7 +87,10 @@ export default function Login() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link href="/forgot-password" className="text-xs text-primary hover:underline">
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs text-primary hover:underline"
+                  >
                     Forgot password?
                   </Link>
                 </div>
@@ -95,18 +109,27 @@ export default function Login() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </button>
                 </div>
               </div>
 
               <div className="pt-2">
-                <Button type="submit" className="w-full h-11 text-base group" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="w-full h-11 text-base group"
+                  disabled={isLoading}
+                >
                   {isLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
                     <>
-                      Log in <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      Log in{" "}
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </Button>
@@ -118,16 +141,26 @@ export default function Login() {
                 <span className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" type="button" className="h-10 text-muted-foreground">
-                 Google
+              <Button
+                variant="outline"
+                type="button"
+                className="h-10 text-muted-foreground"
+              >
+                Google
               </Button>
-              <Button variant="outline" type="button" className="h-10 text-muted-foreground">
-                 Apple
+              <Button
+                variant="outline"
+                type="button"
+                className="h-10 text-muted-foreground"
+              >
+                Apple
               </Button>
             </div>
           </div>

@@ -20,7 +20,10 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
     setIsMobileMenuOpen(false);
     if (location === "/" && href.startsWith("/#")) {
       e.preventDefault();
@@ -54,18 +57,22 @@ export function Navbar() {
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
           ? "bg-background/80 backdrop-blur-md border-b border-border py-3 shadow-2xs"
-          : "bg-transparent py-5"
+          : "bg-transparent py-5",
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={handleLogoClick}>
-            <Logo className="text-2xl md:text-3xl" />
+        <Link
+          href="/"
+          className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={handleLogoClick}
+        >
+          <Logo className="text-2xl md:text-3xl" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
+            <Link
+              key={link.name}
               href={link.href}
               className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
               onClick={(e) => handleNavClick(e, link.href)}
@@ -73,7 +80,13 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Link href="/dashboard" className={cn(buttonVariants({ variant: "default" }), "bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 shadow-lg hover:shadow-xl transition-all")}>
+          <Link
+            href="/dashboard"
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 shadow-lg hover:shadow-xl transition-all",
+            )}
+          >
             Launch App
           </Link>
           <ModeToggle />
@@ -97,16 +110,22 @@ export function Navbar() {
           >
             <div className="flex flex-col p-6 gap-4">
               {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
+                <Link
+                  key={link.name}
                   href={link.href}
                   className="text-lg font-medium text-foreground py-2 border-b border-border"
                   onClick={(e) => handleNavClick(e, link.href)}
                 >
-                    {link.name}
+                  {link.name}
                 </Link>
               ))}
-              <Link href="/dashboard" className={cn(buttonVariants({ variant: "default" }), "w-full mt-2 bg-primary text-primary-foreground rounded-full justify-center")}>
+              <Link
+                href="/dashboard"
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "w-full mt-2 bg-primary text-primary-foreground rounded-full justify-center",
+                )}
+              >
                 Launch App <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
               <div className="flex justify-center mt-2">

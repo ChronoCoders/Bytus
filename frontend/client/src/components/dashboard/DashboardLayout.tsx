@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { 
-  LayoutDashboard, 
-  Landmark, 
-  ArrowRightLeft, 
-  Key, 
-  Settings, 
-  LogOut, 
-  Menu, 
+import {
+  LayoutDashboard,
+  Landmark,
+  ArrowRightLeft,
+  Key,
+  Settings,
+  LogOut,
+  Menu,
   X,
   Bell,
   Search,
-  Building2
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/Logo";
 import { Input } from "@/components/ui/input";
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -40,8 +40,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const navItems = [
     { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
     { icon: Landmark, label: "Treasury", href: "/dashboard/treasury" },
-    { icon: ArrowRightLeft, label: "Transactions", href: "/dashboard/transactions" },
-    { icon: Key, label: "API Keys", href: "/dashboard/apikeys" },
+    {
+      icon: ArrowRightLeft,
+      label: "Transactions",
+      href: "/dashboard/transactions",
+    },
+    { icon: Key, label: "API Keys", href: "/dashboard/api-keys" },
     { icon: Settings, label: "Settings", href: "/dashboard/settings" },
   ];
 
@@ -60,13 +64,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             const isActive = location === item.href;
             return (
               <Link key={item.href} href={item.href}>
-                <div className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
-                  isActive 
-                    ? "bg-primary/10 text-primary" 
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                )}>
-                  <item.icon className={cn("w-5 h-5", isActive ? "text-primary" : "text-muted-foreground")} />
+                <div
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                  )}
+                >
+                  <item.icon
+                    className={cn(
+                      "w-5 h-5",
+                      isActive ? "text-primary" : "text-muted-foreground",
+                    )}
+                  />
                   {item.label}
                 </div>
               </Link>
@@ -86,22 +97,27 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Mobile Sidebar */}
-      <div className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden",
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      )}>
+      <div
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden",
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
         <div className="flex items-center justify-between p-6 border-b border-border">
-           <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <Logo className="text-3xl" />
           </Link>
-          <button onClick={() => setIsSidebarOpen(false)} className="text-muted-foreground">
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="text-muted-foreground"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -110,16 +126,21 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             const isActive = location === item.href;
             return (
               <Link key={item.href} href={item.href}>
-                <div 
+                <div
                   className={cn(
                     "flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer",
-                    isActive 
-                      ? "bg-primary/10 text-primary" 
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                   )}
                   onClick={() => setIsSidebarOpen(false)}
                 >
-                  <item.icon className={cn("w-5 h-5 shrink-0", isActive ? "text-primary" : "text-muted-foreground")} />
+                  <item.icon
+                    className={cn(
+                      "w-5 h-5 shrink-0",
+                      isActive ? "text-primary" : "text-muted-foreground",
+                    )}
+                  />
                   {item.label}
                 </div>
               </Link>
@@ -133,7 +154,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Header */}
         <header className="bg-card border-b border-border sticky top-0 z-30">
           <div className="flex items-center justify-between px-6 py-3">
-            <button 
+            <button
               className="lg:hidden text-muted-foreground hover:text-foreground"
               onClick={() => setIsSidebarOpen(true)}
             >
@@ -142,10 +163,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
             <div className="hidden md:flex items-center max-w-md w-full relative ml-4">
               <Search className="w-4 h-4 absolute left-3 text-muted-foreground" />
-              <Input 
+              <Input
                 id="global-search"
                 name="search"
-                placeholder="Search payments, logs, settings..." 
+                placeholder="Search payments, logs, settings..."
                 className="pl-10 bg-muted/50 border-input focus:bg-card transition-all"
               />
             </div>
@@ -170,16 +191,24 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     <DropdownMenuItem className="cursor-pointer flex flex-col items-start gap-1 p-3">
                       <div className="flex justify-between w-full">
                         <span className="font-medium">Batch Settlement</span>
-                        <span className="text-xs text-muted-foreground">2m ago</span>
+                        <span className="text-xs text-muted-foreground">
+                          2m ago
+                        </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">Settlement #8821 initiated successfully.</p>
+                      <p className="text-xs text-muted-foreground">
+                        Settlement #8821 initiated successfully.
+                      </p>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer flex flex-col items-start gap-1 p-3">
                       <div className="flex justify-between w-full">
                         <span className="font-medium">API Limit Warning</span>
-                        <span className="text-xs text-muted-foreground">1h ago</span>
+                        <span className="text-xs text-muted-foreground">
+                          1h ago
+                        </span>
                       </div>
-                      <p className="text-xs text-muted-foreground">Approaching 80% of daily request limit.</p>
+                      <p className="text-xs text-muted-foreground">
+                        Approaching 80% of daily request limit.
+                      </p>
                     </DropdownMenuItem>
                   </div>
                   <DropdownMenuSeparator />
@@ -188,14 +217,21 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              
+
               <div className="h-8 w-px bg-border mx-1 hidden sm:block" />
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-9 w-9 rounded-full ml-1">
+                  <Button
+                    variant="ghost"
+                    className="relative h-9 w-9 rounded-full ml-1"
+                  >
                     <Avatar className="h-9 w-9 border border-border">
-                      <AvatarImage src={userAvatar} alt="John Doe" className="object-cover" />
+                      <AvatarImage
+                        src={userAvatar}
+                        alt="John Doe"
+                        className="object-cover"
+                      />
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                   </Button>
@@ -203,18 +239,24 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">John Doe</p>
-                      <p className="text-xs leading-none text-muted-foreground">john@acmecorp.com</p>
+                      <p className="text-sm font-medium leading-none">
+                        John Doe
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        john@acmecorp.com
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard/settings">
-                      <div className="w-full cursor-pointer">Business Profile</div>
+                      <div className="w-full cursor-pointer">
+                        Business Profile
+                      </div>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard/apikeys">
+                    <Link href="/dashboard/api-keys">
                       <div className="w-full cursor-pointer">API Keys</div>
                     </Link>
                   </DropdownMenuItem>
@@ -226,7 +268,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/">
-                      <div className="w-full cursor-pointer text-destructive focus:text-destructive">Log out</div>
+                      <div className="w-full cursor-pointer text-destructive focus:text-destructive">
+                        Log out
+                      </div>
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -237,9 +281,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
+          <div className="max-w-7xl mx-auto">{children}</div>
         </main>
       </div>
     </div>

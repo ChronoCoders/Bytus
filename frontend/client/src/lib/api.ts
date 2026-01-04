@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 interface ApiError {
   message: string;
@@ -13,20 +13,20 @@ class ApiClient {
   }
 
   private getAuthHeader(): HeadersInit {
-    const token = localStorage.getItem('auth_token');
-    return token ? { 'Authorization': `Bearer ${token}` } : {};
+    const token = localStorage.getItem("auth_token");
+    return token ? { Authorization: `Bearer ${token}` } : {};
   }
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
-    
+
     const config: RequestInit = {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...this.getAuthHeader(),
         ...options.headers,
       },
@@ -66,8 +66,8 @@ class ApiClient {
       user_id: string;
       email: string;
       message: string;
-    }>('/api/auth/signup', {
-      method: 'POST',
+    }>("/api/auth/signup", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -80,30 +80,30 @@ class ApiClient {
         email: string;
         company_name: string;
       };
-    }>('/api/auth/login', {
-      method: 'POST',
+    }>("/api/auth/login", {
+      method: "POST",
       body: JSON.stringify({ email, password }),
     });
 
     // Store token
-    localStorage.setItem('auth_token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    localStorage.setItem("auth_token", response.token);
+    localStorage.setItem("user", JSON.stringify(response.user));
 
     return response;
   }
 
   logout() {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user");
   }
 
   getCurrentUser() {
-    const userStr = localStorage.getItem('user');
+    const userStr = localStorage.getItem("user");
     return userStr ? JSON.parse(userStr) : null;
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('auth_token');
+    return !!localStorage.getItem("auth_token");
   }
 
   // Dashboard endpoints
@@ -114,7 +114,7 @@ class ApiClient {
       pending_settlement: number;
       bus_locked: number;
       bus_required: number;
-    }>('/api/dashboard/overview');
+    }>("/api/dashboard/overview");
   }
 
   // Transactions endpoints
@@ -125,13 +125,13 @@ class ApiClient {
     limit?: number;
   }) {
     const queryParams = new URLSearchParams();
-    if (params?.search) queryParams.append('search', params.search);
-    if (params?.filter) queryParams.append('filter', params.filter);
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.search) queryParams.append("search", params.search);
+    if (params?.filter) queryParams.append("filter", params.filter);
+    if (params?.page) queryParams.append("page", params.page.toString());
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
 
     const query = queryParams.toString();
-    const endpoint = query ? `/api/transactions?${query}` : '/api/transactions';
+    const endpoint = query ? `/api/transactions?${query}` : "/api/transactions";
 
     return this.request<{
       transactions: Array<{
@@ -163,13 +163,15 @@ class ApiClient {
 
   // Treasury endpoints
   async getTreasuryPositions() {
-    return this.request<Array<{
-      name: string;
-      protocol: string;
-      balance: string;
-      value: number;
-      apy: string;
-    }>>('/api/treasury/positions');
+    return this.request<
+      Array<{
+        name: string;
+        protocol: string;
+        balance: string;
+        value: number;
+        apy: string;
+      }>
+    >("/api/treasury/positions");
   }
 
   async getTreasuryPortfolio() {
@@ -182,20 +184,22 @@ class ApiClient {
         value: number;
         apy: string;
       }>;
-    }>('/api/treasury/portfolio');
+    }>("/api/treasury/portfolio");
   }
 
   // API Keys endpoints
   async getApiKeys() {
-    return this.request<Array<{
-      id: string;
-      name: string;
-      prefix: string;
-      created_at: string;
-      last_used: string;
-      permissions: string[];
-      status: string;
-    }>>('/api/keys');
+    return this.request<
+      Array<{
+        id: string;
+        name: string;
+        prefix: string;
+        created_at: string;
+        last_used: string;
+        permissions: string[];
+        status: string;
+      }>
+    >("/api/keys");
   }
 
   async createApiKey(name: string) {
@@ -204,8 +208,8 @@ class ApiClient {
       secret_key: string;
       name: string;
       created_at: string;
-    }>('/api/keys', {
-      method: 'POST',
+    }>("/api/keys", {
+      method: "POST",
       body: JSON.stringify({ name }),
     });
   }
@@ -214,7 +218,7 @@ class ApiClient {
     return this.request<{
       message: string;
     }>(`/api/keys/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   }
 
@@ -226,7 +230,7 @@ class ApiClient {
       website: string;
       registration_number: string;
       kyc_status: string;
-    }>('/api/user/settings');
+    }>("/api/user/settings");
   }
 
   async updateSettings(data: {
@@ -237,8 +241,8 @@ class ApiClient {
     return this.request<{
       message: string;
       updated_fields: string[];
-    }>('/api/user/settings', {
-      method: 'PUT',
+    }>("/api/user/settings", {
+      method: "PUT",
       body: JSON.stringify(data),
     });
   }

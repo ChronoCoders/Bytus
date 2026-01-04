@@ -1,14 +1,14 @@
-import { 
-  LayoutDashboard, 
-  Landmark, 
-  ArrowRightLeft, 
-  Key, 
-  Settings, 
-  Bell, 
-  Search, 
-  TrendingUp, 
+import {
+  LayoutDashboard,
+  Landmark,
+  ArrowRightLeft,
+  Key,
+  Settings,
+  Bell,
+  Search,
+  TrendingUp,
   DollarSign,
-  Activity
+  Activity,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -60,11 +60,11 @@ export function DashboardPreview() {
               { icon: Key, label: "API Keys" },
               { icon: Settings, label: "Settings" },
             ].map((item, i) => (
-              <div 
+              <div
                 key={i}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  item.active 
-                    ? "bg-primary/10 text-primary" 
+                  item.active
+                    ? "bg-primary/10 text-primary"
                     : "text-muted-foreground"
                 }`}
               >
@@ -79,10 +79,17 @@ export function DashboardPreview() {
         <div className="flex-1 bg-background/50 p-6 overflow-hidden relative">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-foreground">Merchant Dashboard</h2>
-              <p className="text-xs text-muted-foreground">Welcome back, Acme Corp!</p>
+              <h2 className="text-xl font-bold text-foreground">
+                Merchant Dashboard
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Welcome back, Acme Corp!
+              </p>
             </div>
-            <Button size="sm" className="h-8 text-xs bg-primary text-primary-foreground">
+            <Button
+              size="sm"
+              className="h-8 text-xs bg-primary text-primary-foreground"
+            >
               Sync Ledger
             </Button>
           </div>
@@ -90,11 +97,15 @@ export function DashboardPreview() {
           <div className="grid grid-cols-2 gap-4 mb-6">
             <Card className="shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
-                <CardTitle className="text-xs font-medium text-muted-foreground">Monthly Volume</CardTitle>
+                <CardTitle className="text-xs font-medium text-muted-foreground">
+                  Monthly Volume
+                </CardTitle>
                 <DollarSign className="h-3 w-3 text-muted-foreground" />
               </CardHeader>
               <CardContent className="p-4 pt-0">
-                <div className="text-lg font-bold text-foreground">$1,245,000</div>
+                <div className="text-lg font-bold text-foreground">
+                  $1,245,000
+                </div>
                 <p className="text-[10px] text-green-600 flex items-center gap-1 mt-1">
                   <TrendingUp className="w-3 h-3" />
                   +12.5% vs last month
@@ -103,12 +114,16 @@ export function DashboardPreview() {
             </Card>
             <Card className="shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4">
-                <CardTitle className="text-xs font-medium text-muted-foreground">Daily Tx Count</CardTitle>
+                <CardTitle className="text-xs font-medium text-muted-foreground">
+                  Daily Tx Count
+                </CardTitle>
                 <Activity className="h-3 w-3 text-muted-foreground" />
               </CardHeader>
               <CardContent className="p-4 pt-0">
                 <div className="text-lg font-bold text-foreground">1,452</div>
-                <p className="text-[10px] text-muted-foreground mt-1">~48 per hour</p>
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  ~48 per hour
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -122,9 +137,23 @@ export function DashboardPreview() {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data}>
                     <defs>
-                      <linearGradient id="colorVolumePreview" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                      <linearGradient
+                        id="colorVolumePreview"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="hsl(var(--primary))"
+                          stopOpacity={0.3}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="hsl(var(--primary))"
+                          stopOpacity={0}
+                        />
                       </linearGradient>
                     </defs>
                     <Area
@@ -141,7 +170,7 @@ export function DashboardPreview() {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Overlay to simulate "more content below" */}
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>

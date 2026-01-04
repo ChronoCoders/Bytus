@@ -19,8 +19,9 @@ export function ProductPreview() {
               Enterprise-Grade Dashboard
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-              Manage treasury operations, monitor settlement batches, and control API access 
-              from a powerful, unified command center designed for finance teams.
+              Manage treasury operations, monitor settlement batches, and
+              control API access from a powerful, unified command center
+              designed for finance teams.
             </p>
             <Link href="/dashboard">
               <Button variant="link" className="text-primary gap-2 text-lg">
@@ -44,7 +45,7 @@ export function ProductPreview() {
                 <DashboardPreview />
               </div>
             </div>
-            
+
             {/* Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10" />
           </motion.div>

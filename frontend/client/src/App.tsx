@@ -12,7 +12,9 @@ import { Loader2 } from "lucide-react";
 const Home = lazy(() => import("@/pages/Home.tsx"));
 const Login = lazy(() => import("@/pages/Login.tsx"));
 const Signup = lazy(() => import("@/pages/onboarding/Signup.tsx"));
-const VerifyDocument = lazy(() => import("@/pages/onboarding/VerifyDocument.tsx"));
+const VerifyDocument = lazy(
+  () => import("@/pages/onboarding/VerifyDocument.tsx"),
+);
 const VerifyFace = lazy(() => import("@/pages/onboarding/VerifyFace.tsx"));
 const Overview = lazy(() => import("@/pages/dashboard/Overview.tsx"));
 const Transactions = lazy(() => import("@/pages/dashboard/Transactions.tsx"));
@@ -72,7 +74,10 @@ function App() {
                 </LoginRedirect>
               </Route>
 
-              <Route path="/onboarding/verify-document" component={VerifyDocument} />
+              <Route
+                path="/onboarding/verify-document"
+                component={VerifyDocument}
+              />
               <Route path="/onboarding/verify-face" component={VerifyFace} />
 
               <Route path="/dashboard">

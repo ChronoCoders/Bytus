@@ -13,7 +13,6 @@ export function Hero() {
 
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -33,15 +32,28 @@ export function Hero() {
             </h1>
 
             <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
-              Accept crypto payments globally for businesses and merchants. Settle in fiat instantly. Zero volatility risk.
+              Accept crypto payments globally for businesses and merchants.
+              Settle in fiat instantly. Zero volatility risk.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/onboarding/signup" className={cn(buttonVariants({ variant: "default" }), "h-14 px-8 rounded-full text-lg bg-primary text-primary-foreground hover:bg-primary/90 shadow-xl hover:shadow-2xl transition-all")}>
-                  Request Demo
+              <Link
+                href="/onboarding/signup"
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "h-14 px-8 rounded-full text-lg bg-primary text-primary-foreground hover:bg-primary/90 shadow-xl hover:shadow-2xl transition-all",
+                )}
+              >
+                Request Demo
               </Link>
-              <Link href="/contact" className={cn(buttonVariants({ variant: "outline" }), "h-14 px-8 rounded-full text-lg border-border text-foreground hover:bg-muted")}>
-                  Contact Sales
+              <Link
+                href="/contact"
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  "h-14 px-8 rounded-full text-lg border-border text-foreground hover:bg-muted",
+                )}
+              >
+                Contact Sales
               </Link>
             </div>
 
@@ -64,11 +76,15 @@ export function Hero() {
             className="relative"
           >
             <div className="relative z-10 flex items-center justify-center">
-               <GlobeVisualization />
-              
-              <motion.div 
+              <GlobeVisualization />
+
+              <motion.div
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="absolute top-10 right-0 lg:right-10 bg-card/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-border max-w-[200px] z-20"
               >
                 <div className="flex items-center gap-3 mb-2">
@@ -76,32 +92,44 @@ export function Hero() {
                     <ArrowRight className="w-4 h-4 -rotate-45" />
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Received</div>
-                    <div className="text-sm font-bold text-foreground">+ $125,000.00</div>
+                    <div className="text-xs text-muted-foreground">
+                      Received
+                    </div>
+                    <div className="text-sm font-bold text-foreground">
+                      + $125,000.00
+                    </div>
                   </div>
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1,
+                }}
                 className="absolute bottom-10 left-0 lg:left-10 bg-card/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-border z-20"
               >
-                 <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary">
                     <Globe className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Global Settlement</div>
-                    <div className="text-sm font-bold text-foreground">T+0 Instant</div>
+                    <div className="text-xs text-muted-foreground">
+                      Global Settlement
+                    </div>
+                    <div className="text-sm font-bold text-foreground">
+                      T+0 Instant
+                    </div>
                   </div>
                 </div>
               </motion.div>
             </div>
-            
+
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10" />
           </motion.div>
-
         </div>
       </div>
     </section>

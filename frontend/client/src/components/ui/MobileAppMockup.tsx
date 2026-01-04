@@ -1,4 +1,10 @@
-import { ArrowUpRight, ArrowDownLeft, Wallet, Bitcoin, Activity } from "lucide-react";
+import {
+  ArrowUpRight,
+  ArrowDownLeft,
+  Wallet,
+  Bitcoin,
+  Activity,
+} from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
 
 function EthereumIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -18,7 +24,7 @@ function EthereumIcon(props: React.SVGProps<SVGSVGElement>) {
       <path d="M12 22 3 17l9 5Z" />
       <path d="m12 22 9-5-9-15-9 15 9 5Z" />
     </svg>
-  )
+  );
 }
 
 function SolanaIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -38,7 +44,7 @@ function SolanaIcon(props: React.SVGProps<SVGSVGElement>) {
       <path d="M8 10L4 6" />
       <path d="M16 14l4 4" />
     </svg>
-  )
+  );
 }
 
 const data = [
@@ -67,7 +73,6 @@ export function MobileAppMockup() {
 
       {/* Main Content */}
       <div className="relative h-full w-full bg-background text-foreground overflow-hidden flex flex-col">
-        
         {/* Header Section */}
         <div className="pt-12 px-6 pb-6 bg-gradient-to-b from-primary/10 to-transparent">
           <div className="flex justify-between items-center mb-6">
@@ -75,10 +80,16 @@ export function MobileAppMockup() {
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                 <Wallet className="w-4 h-4" />
               </div>
-              <span className="text-sm font-medium text-muted-foreground">My Wallet</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                My Wallet
+              </span>
             </div>
             <div className="w-8 h-8 rounded-full bg-muted border border-border overflow-hidden">
-              <img src="/profile_avatar.jpg" alt="Profile" className="w-full h-full object-cover" />
+              <img
+                src="/profile_avatar.jpg"
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
@@ -98,17 +109,25 @@ export function MobileAppMockup() {
             <AreaChart data={data}>
               <defs>
                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                  <stop
+                    offset="5%"
+                    stopColor="hsl(var(--primary))"
+                    stopOpacity={0.3}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="hsl(var(--primary))"
+                    stopOpacity={0}
+                  />
                 </linearGradient>
               </defs>
-              <Area 
-                type="monotone" 
-                dataKey="value" 
-                stroke="hsl(var(--primary))" 
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="hsl(var(--primary))"
                 strokeWidth={2}
-                fillOpacity={1} 
-                fill="url(#colorValue)" 
+                fillOpacity={1}
+                fill="url(#colorValue)"
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -126,7 +145,9 @@ export function MobileAppMockup() {
               <div className="w-12 h-12 rounded-2xl bg-muted/50 hover:bg-muted flex items-center justify-center text-primary transition-colors cursor-pointer">
                 <action.icon className="w-5 h-5" />
               </div>
-              <span className="text-[10px] text-muted-foreground">{action.label}</span>
+              <span className="text-[10px] text-muted-foreground">
+                {action.label}
+              </span>
             </div>
           ))}
         </div>
@@ -139,23 +160,59 @@ export function MobileAppMockup() {
           </div>
 
           {[
-            { name: "Bitcoin", symbol: "BTC", amount: "0.45", value: "$19,240", change: "+1.2%", color: "text-orange-500", bg: "bg-orange-500/10", Icon: Bitcoin },
-            { name: "Ethereum", symbol: "ETH", amount: "4.20", value: "$8,120", change: "+4.5%", color: "text-indigo-500", bg: "bg-indigo-500/10", Icon: EthereumIcon },
-            { name: "Solana", symbol: "SOL", amount: "145.0", value: "$3,402", change: "-0.8%", color: "text-emerald-500", bg: "bg-emerald-500/10", Icon: SolanaIcon },
+            {
+              name: "Bitcoin",
+              symbol: "BTC",
+              amount: "0.45",
+              value: "$19,240",
+              change: "+1.2%",
+              color: "text-orange-500",
+              bg: "bg-orange-500/10",
+              Icon: Bitcoin,
+            },
+            {
+              name: "Ethereum",
+              symbol: "ETH",
+              amount: "4.20",
+              value: "$8,120",
+              change: "+4.5%",
+              color: "text-indigo-500",
+              bg: "bg-indigo-500/10",
+              Icon: EthereumIcon,
+            },
+            {
+              name: "Solana",
+              symbol: "SOL",
+              amount: "145.0",
+              value: "$3,402",
+              change: "-0.8%",
+              color: "text-emerald-500",
+              bg: "bg-emerald-500/10",
+              Icon: SolanaIcon,
+            },
           ].map((asset, i) => (
-            <div key={i} className="flex items-center justify-between group cursor-pointer hover:bg-background/50 p-2 -mx-2 rounded-xl transition-colors">
+            <div
+              key={i}
+              className="flex items-center justify-between group cursor-pointer hover:bg-background/50 p-2 -mx-2 rounded-xl transition-colors"
+            >
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-xl ${asset.bg} ${asset.color} flex items-center justify-center`}>
+                <div
+                  className={`w-10 h-10 rounded-xl ${asset.bg} ${asset.color} flex items-center justify-center`}
+                >
                   <asset.Icon className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="text-sm font-medium">{asset.name}</div>
-                  <div className="text-xs text-muted-foreground">{asset.amount} {asset.symbol}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {asset.amount} {asset.symbol}
+                  </div>
                 </div>
               </div>
               <div className="text-right">
                 <div className="text-sm font-medium">{asset.value}</div>
-                <div className={`text-xs ${asset.change.startsWith('+') ? 'text-emerald-500' : 'text-rose-500'}`}>
+                <div
+                  className={`text-xs ${asset.change.startsWith("+") ? "text-emerald-500" : "text-rose-500"}`}
+                >
                   {asset.change}
                 </div>
               </div>

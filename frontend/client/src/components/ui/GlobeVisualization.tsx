@@ -6,7 +6,7 @@ export function GlobeVisualization() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointerInteracting = useRef<number | null>(null);
   const pointerInteractionMovement = useRef(0);
-  
+
   const r = useSpring(0, {
     stiffness: 280,
     damping: 60,
@@ -19,10 +19,11 @@ export function GlobeVisualization() {
 
     if (!canvasRef.current) return;
 
-    const onResize = () => canvasRef.current && (width = canvasRef.current.offsetWidth)
-    window.addEventListener('resize', onResize)
-    onResize()
-    
+    const onResize = () =>
+      canvasRef.current && (width = canvasRef.current.offsetWidth);
+    window.addEventListener("resize", onResize);
+    onResize();
+
     let globe: ReturnType<typeof createGlobe> | undefined;
     try {
       if (width > 0) {
@@ -41,7 +42,7 @@ export function GlobeVisualization() {
           glowColor: [0.8, 0.9, 1],
           opacity: 0.8,
           markers: [
-            { location: [40.7128, -74.0060], size: 0.05 },
+            { location: [40.7128, -74.006], size: 0.05 },
             { location: [51.5074, -0.1278], size: 0.05 },
             { location: [35.6762, 139.6503], size: 0.05 },
             { location: [1.3521, 103.8198], size: 0.05 },
@@ -49,13 +50,13 @@ export function GlobeVisualization() {
             { location: [-33.8688, 151.2093], size: 0.05 },
             { location: [22.3193, 114.1694], size: 0.05 },
             { location: [48.8566, 2.3522], size: 0.05 },
-            { location: [52.5200, 13.4050], size: 0.05 },
+            { location: [52.52, 13.405], size: 0.05 },
             { location: [37.7749, -122.4194], size: 0.05 },
           ],
           onRender: (state) => {
             if (!pointerInteracting.current) {
               phi += 0.005;
-            } 
+            }
             state.phi = phi + r.get();
             state.width = width * 2;
             state.height = width * 2;
@@ -66,29 +67,39 @@ export function GlobeVisualization() {
       console.error("Failed to initialize globe:", e);
     }
 
-    setTimeout(() => { if (canvasRef.current) canvasRef.current.style.opacity = '1' });
-    return () => { 
-        if (globe) globe.destroy();
-        window.removeEventListener('resize', onResize);
-    }
+    setTimeout(() => {
+      if (canvasRef.current) canvasRef.current.style.opacity = "1";
+    });
+    return () => {
+      if (globe) globe.destroy();
+      window.removeEventListener("resize", onResize);
+    };
   }, [r]);
 
   return (
     <div className="w-full relative aspect-square max-w-[600px] mx-auto flex items-center justify-center">
       <canvas
         ref={canvasRef}
-        style={{ width: '100%', height: '100%', maxWidth: '100%', aspectRatio: '1', opacity: 0, transition: 'opacity 1s ease' }}
+        style={{
+          width: "100%",
+          height: "100%",
+          maxWidth: "100%",
+          aspectRatio: "1",
+          opacity: 0,
+          transition: "opacity 1s ease",
+        }}
         onPointerDown={(e) => {
-          pointerInteracting.current = e.clientX - pointerInteractionMovement.current;
-          canvasRef.current!.style.cursor = 'grabbing';
+          pointerInteracting.current =
+            e.clientX - pointerInteractionMovement.current;
+          canvasRef.current!.style.cursor = "grabbing";
         }}
         onPointerUp={() => {
           pointerInteracting.current = null;
-          canvasRef.current!.style.cursor = 'grab';
+          canvasRef.current!.style.cursor = "grab";
         }}
         onPointerOut={() => {
           pointerInteracting.current = null;
-          canvasRef.current!.style.cursor = 'grab';
+          canvasRef.current!.style.cursor = "grab";
         }}
         onMouseMove={(e) => {
           if (pointerInteracting.current !== null) {
