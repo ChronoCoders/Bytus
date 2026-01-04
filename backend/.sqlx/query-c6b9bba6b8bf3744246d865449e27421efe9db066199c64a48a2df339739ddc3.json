@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT locked_amount, required_amount, last_calculated_at FROM bus_locks WHERE user_id = $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "locked_amount",
+        "type_info": "Numeric"
+      },
+      {
+        "ordinal": 1,
+        "name": "required_amount",
+        "type_info": "Numeric"
+      },
+      {
+        "ordinal": 2,
+        "name": "last_calculated_at",
+        "type_info": "Timestamp"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "c6b9bba6b8bf3744246d865449e27421efe9db066199c64a48a2df339739ddc3"
+}

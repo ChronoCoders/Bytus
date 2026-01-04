@@ -12,6 +12,8 @@ async fn health_check() -> &'static str {
 }
 
 pub fn create_router(pool: PgPool) -> Router {
+    let rate_limiter = mw::rate_limit::RateLimiter::new(100, 60);
+
     let protected_routes = Router::new()
         .route(
             "/api/dashboard/overview",
@@ -43,9 +45,14 @@ pub fn create_router(pool: PgPool) -> Router {
         )
         .route("/api/payments", post(handlers::payments::create_payment))
         .route("/api/payments/:id", get(handlers::payments::get_payment))
+        .route("/api/bus-lock/balance", get(handlers::bus_lock::get_bus_lock_balance))
         .route_layer(middleware::from_fn_with_state(
             pool.clone(),
             mw::auth::auth_middleware,
+        ))
+        .layer(middleware::from_fn_with_state(
+            rate_limiter.clone(),
+            mw::rate_limit::rate_limit_middleware,
         ));
 
     Router::new()
