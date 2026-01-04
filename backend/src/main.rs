@@ -14,6 +14,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
     tracing_subscriber::fmt::init();
 
+    // Wait for Railway private DNS to be ready
+    tokio::time::sleep(tokio::time::Duration::from_secs(3)).await;
+
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
     let pool = PgPoolOptions::new()
