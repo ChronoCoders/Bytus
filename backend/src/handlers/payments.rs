@@ -1,7 +1,8 @@
+use crate::handlers::auth::Claims;
 use axum::{
     extract::{Path, State},
     http::StatusCode,
-    Json,
+    Extension, Json,
 };
 use bigdecimal::{BigDecimal, FromPrimitive};
 use serde::{Deserialize, Serialize};
@@ -32,7 +33,8 @@ async fn calculate_and_update_bus_lock(
     user_id: Uuid,
     payment_amount: f64,
 ) -> Result<f64, StatusCode> {
-    let lock_amount = payment_amount * 0.01;
+    // Fixed: 0.001 = 0.1% (was 0.01 = 1%)
+    let lock_amount = payment_amount * 0.001;
 
     let existing = sqlx::query!(
         r#"SELECT locked_amount FROM bus_locks WHERE user_id = $1"#,
@@ -50,7 +52,7 @@ async fn calculate_and_update_bus_lock(
 
         sqlx::query!(
             r#"
-            UPDATE bus_locks 
+            UPDATE bus_locks
             SET locked_amount = $1, required_amount = $1, last_calculated_at = NOW(), updated_at = NOW()
             WHERE user_id = $2
             "#,
@@ -83,18 +85,24 @@ async fn calculate_and_update_bus_lock(
 
 pub async fn create_payment(
     State(pool): State<PgPool>,
+    Extension(claims): Extension<Claims>,
     Json(payload): Json<CreatePaymentRequest>,
 ) -> Result<Json<PaymentResponse>, StatusCode> {
+    // Extract authenticated user_id from JWT claims
+    let user_id = Uuid::parse_str(&claims.sub).map_err(|_| StatusCode::UNAUTHORIZED)?;
+    
     let id = Uuid::new_v4();
     let amount_decimal = BigDecimal::from_f64(payload.amount).ok_or(StatusCode::BAD_REQUEST)?;
 
+    // Fixed: Insert actual user_id (was NULL)
     let result = sqlx::query!(
         r#"
         INSERT INTO transactions (id, user_id, tx_type, amount, currency, status, customer_email, metadata, created_at)
-        VALUES ($1, NULL, 'payment', $2, $3, 'pending', $4, $5, NOW())
+        VALUES ($1, $2, 'payment', $3, $4, 'pending', $5, $6, NOW())
         RETURNING id, amount, currency, status, customer_email, created_at
         "#,
         id,
+        user_id,
         amount_decimal,
         payload.currency,
         payload.customer_email,
@@ -104,7 +112,7 @@ pub async fn create_payment(
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-    let user_id = Uuid::nil();
+    // Fixed: Use actual user_id (was Uuid::nil())
     let bus_lock = calculate_and_update_bus_lock(&pool, user_id, payload.amount).await?;
 
     Ok(Json(PaymentResponse {
@@ -120,15 +128,21 @@ pub async fn create_payment(
 
 pub async fn get_payment(
     State(pool): State<PgPool>,
+    Extension(claims): Extension<Claims>,
     Path(payment_id): Path<Uuid>,
 ) -> Result<Json<PaymentResponse>, StatusCode> {
+    // Extract authenticated user_id
+    let user_id = Uuid::parse_str(&claims.sub).map_err(|_| StatusCode::UNAUTHORIZED)?;
+
+    // Fixed: Validate user ownership (was missing user_id check)
     let result = sqlx::query!(
         r#"
         SELECT id, amount, currency, status, customer_email, created_at
         FROM transactions
-        WHERE id = $1
+        WHERE id = $1 AND user_id = $2
         "#,
-        payment_id
+        payment_id,
+        user_id
     )
     .fetch_one(&pool)
     .await
@@ -136,6 +150,7 @@ pub async fn get_payment(
 
     let amount: f64 = result.amount.to_string().parse().unwrap_or(0.0);
 
+    // Fixed: Use 0.001 = 0.1% (was 0.01 = 1%)
     Ok(Json(PaymentResponse {
         id: result.id,
         amount,
@@ -143,6 +158,6 @@ pub async fn get_payment(
         status: result.status,
         customer_email: result.customer_email.unwrap_or_default(),
         created_at: result.created_at.unwrap().to_string(),
-        bus_lock_required: amount * 0.01,
+        bus_lock_required: amount * 0.001,
     }))
 }

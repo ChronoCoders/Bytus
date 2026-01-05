@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE bus_locks\n            SET locked_amount = $1, required_amount = $1, last_calculated_at = NOW(), updated_at = NOW()\n            WHERE user_id = $2\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Numeric",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "7fbbed60ab6e9e96a6ef51c632ca52ac92f58d7e143d1bef6da5084068f3e6b1"
+}

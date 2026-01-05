@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT id, amount, currency, status, customer_email, created_at\n        FROM transactions\n        WHERE id = $1\n        ",
+  "query": "\n        INSERT INTO transactions (id, user_id, tx_type, amount, currency, status, customer_email, metadata, created_at)\n        VALUES ($1, $2, 'payment', $3, $4, 'pending', $5, $6, NOW())\n        RETURNING id, amount, currency, status, customer_email, created_at\n        ",
   "describe": {
     "columns": [
       {
@@ -36,7 +36,12 @@
     ],
     "parameters": {
       "Left": [
-        "Uuid"
+        "Uuid",
+        "Uuid",
+        "Numeric",
+        "Varchar",
+        "Varchar",
+        "Jsonb"
       ]
     },
     "nullable": [
@@ -48,5 +53,5 @@
       true
     ]
   },
-  "hash": "680c5529f0e126f0ed71d3ae7ccbff8633bae8ebe025f4e1b11d0f8a338402e4"
+  "hash": "aad5340cb972489a9c8abb6f42850844f51bc55bd05b72814c45d98a24f8e630"
 }
