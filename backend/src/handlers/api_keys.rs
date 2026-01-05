@@ -5,7 +5,7 @@ use axum::{
     Extension, Json,
 };
 use serde::{Deserialize, Serialize};
-use sha2::{Sha256, Digest};
+use sha2::{Digest, Sha256};
 use sqlx::PgPool;
 use uuid::Uuid;
 
@@ -44,11 +44,11 @@ fn generate_api_key() -> (String, String) {
         .map(|_| format!("{:x}", rand::random::<u8>()))
         .collect();
     let key = format!("sk_live_{}", random_part);
-    
+
     let mut hasher = Sha256::new();
     hasher.update(&key);
     let hash = format!("{:x}", hasher.finalize());
-    
+
     (key, hash)
 }
 
@@ -98,7 +98,9 @@ pub async fn create_key(
     let user_id = Uuid::parse_str(&claims.sub).map_err(|_| StatusCode::UNAUTHORIZED)?;
     let (secret_key, key_hash) = generate_api_key();
     let id = Uuid::new_v4();
-    let permissions = payload.permissions.unwrap_or_else(|| vec!["read".to_string()]);
+    let permissions = payload
+        .permissions
+        .unwrap_or_else(|| vec!["read".to_string()]);
 
     sqlx::query!(
         r#"

@@ -51,29 +51,93 @@ pub async fn list_transactions(
     Extension(claims): Extension<Claims>,
     Query(params): Query<TransactionQuery>,
 ) -> Result<Json<TransactionListResponse>, StatusCode> {
-    let page = params.page.unwrap_or(1);
-    let limit = params.limit.unwrap_or(10);
+    let user_id = Uuid::parse_str(&claims.sub).map_err(|_| StatusCode::UNAUTHORIZED)?;
+    
+    let page = params.page.unwrap_or(1).max(1);
+    let limit = params.limit.unwrap_or(10).clamp(1, 100);
     let offset = (page - 1) * limit;
 
-    let mut query = String::from(
-        "SELECT id, tx_type, amount, currency, status, customer_email, created_at FROM transactions WHERE 1=1"
-    );
+    // Build search pattern (wraps with % for ILIKE)
+    let search_pattern = params.search.as_ref().map(|s| format!("%{}%", s));
+    
+    // Status whitelist (prevent invalid status injection)
+    let status_filter = params.filter.as_ref().and_then(|f| {
+        match f.as_str() {
+            "pending" | "settled" | "failed" => Some(f.as_str()),
+            _ => None
+        }
+    });
 
-    if let Some(search) = &params.search {
-        query.push_str(&format!(" AND (customer_email ILIKE '%{}%' OR status ILIKE '%{}%')", search, search));
+    // Query based on filter combinations (all use bind parameters)
+    type RowType = (Uuid, String, bigdecimal::BigDecimal, String, String, Option<String>, chrono::NaiveDateTime);
+    
+    let rows: Vec<RowType> = match (search_pattern.as_ref(), status_filter) {
+        (Some(pattern), Some(status)) => {
+            sqlx::query_as(
+                "SELECT id, tx_type, amount, currency, status, customer_email, created_at 
+                 FROM transactions 
+                 WHERE user_id = $1 
+                   AND (customer_email ILIKE $2 OR status ILIKE $2)
+                   AND status = $3
+                 ORDER BY created_at DESC 
+                 LIMIT $4 OFFSET $5"
+            )
+            .bind(user_id)
+            .bind(pattern)
+            .bind(status)
+            .bind(limit)
+            .bind(offset)
+            .fetch_all(&pool)
+            .await
+        },
+        (Some(pattern), None) => {
+            sqlx::query_as(
+                "SELECT id, tx_type, amount, currency, status, customer_email, created_at 
+                 FROM transactions 
+                 WHERE user_id = $1 
+                   AND (customer_email ILIKE $2 OR status ILIKE $2)
+                 ORDER BY created_at DESC 
+                 LIMIT $3 OFFSET $4"
+            )
+            .bind(user_id)
+            .bind(pattern)
+            .bind(limit)
+            .bind(offset)
+            .fetch_all(&pool)
+            .await
+        },
+        (None, Some(status)) => {
+            sqlx::query_as(
+                "SELECT id, tx_type, amount, currency, status, customer_email, created_at 
+                 FROM transactions 
+                 WHERE user_id = $1 
+                   AND status = $2
+                 ORDER BY created_at DESC 
+                 LIMIT $3 OFFSET $4"
+            )
+            .bind(user_id)
+            .bind(status)
+            .bind(limit)
+            .bind(offset)
+            .fetch_all(&pool)
+            .await
+        },
+        (None, None) => {
+            sqlx::query_as(
+                "SELECT id, tx_type, amount, currency, status, customer_email, created_at 
+                 FROM transactions 
+                 WHERE user_id = $1 
+                 ORDER BY created_at DESC 
+                 LIMIT $2 OFFSET $3"
+            )
+            .bind(user_id)
+            .bind(limit)
+            .bind(offset)
+            .fetch_all(&pool)
+            .await
+        }
     }
-
-    if let Some(filter) = &params.filter {
-        query.push_str(&format!(" AND status = '{}'", filter));
-    }
-
-    query.push_str(" ORDER BY created_at DESC");
-    query.push_str(&format!(" LIMIT {} OFFSET {}", limit, offset));
-
-    let rows = sqlx::query_as::<_, (Uuid, String, bigdecimal::BigDecimal, String, String, Option<String>, chrono::NaiveDateTime)>(&query)
-        .fetch_all(&pool)
-        .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
     let transactions: Vec<Transaction> = rows
         .into_iter()
@@ -88,11 +152,14 @@ pub async fn list_transactions(
         })
         .collect();
 
-    let total_query = "SELECT COUNT(*) FROM transactions";
-    let total: i64 = sqlx::query_scalar(total_query)
-        .fetch_one(&pool)
-        .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    // Count total (also filtered by user_id)
+    let total: i64 = sqlx::query_scalar(
+        "SELECT COUNT(*) FROM transactions WHERE user_id = $1"
+    )
+    .bind(user_id)
+    .fetch_one(&pool)
+    .await
+    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
     Ok(Json(TransactionListResponse {
         transactions,
@@ -103,16 +170,19 @@ pub async fn list_transactions(
 
 pub async fn get_transaction(
     State(pool): State<PgPool>,
-    Extension(_claims): Extension<Claims>,
+    Extension(claims): Extension<Claims>,
     Path(id): Path<Uuid>,
 ) -> Result<Json<TransactionDetail>, StatusCode> {
+    let user_id = Uuid::parse_str(&claims.sub).map_err(|_| StatusCode::UNAUTHORIZED)?;
+
     let result = sqlx::query!(
         r#"
         SELECT id, tx_type, amount, currency, status, customer_email, metadata, created_at
         FROM transactions
-        WHERE id = $1
+        WHERE id = $1 AND user_id = $2
         "#,
-        id
+        id,
+        user_id
     )
     .fetch_one(&pool)
     .await

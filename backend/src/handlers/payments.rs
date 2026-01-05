@@ -33,7 +33,7 @@ async fn calculate_and_update_bus_lock(
     payment_amount: f64,
 ) -> Result<f64, StatusCode> {
     let lock_amount = payment_amount * 0.01;
-    
+
     let existing = sqlx::query!(
         r#"SELECT locked_amount FROM bus_locks WHERE user_id = $1"#,
         user_id
@@ -45,8 +45,9 @@ async fn calculate_and_update_bus_lock(
     if let Some(lock) = existing {
         let current_locked = lock.locked_amount.to_string().parse::<f64>().unwrap_or(0.0);
         let new_locked = current_locked + lock_amount;
-        let new_locked_decimal = BigDecimal::from_f64(new_locked).ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
-        
+        let new_locked_decimal =
+            BigDecimal::from_f64(new_locked).ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
+
         sqlx::query!(
             r#"
             UPDATE bus_locks 
@@ -60,8 +61,9 @@ async fn calculate_and_update_bus_lock(
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     } else {
-        let lock_decimal = BigDecimal::from_f64(lock_amount).ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
-        
+        let lock_decimal =
+            BigDecimal::from_f64(lock_amount).ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
+
         sqlx::query!(
             r#"
             INSERT INTO bus_locks (id, user_id, locked_amount, required_amount, last_calculated_at, created_at, updated_at)

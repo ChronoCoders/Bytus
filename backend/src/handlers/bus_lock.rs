@@ -1,9 +1,5 @@
 use crate::handlers::auth::Claims;
-use axum::{
-    extract::State,
-    http::StatusCode,
-    Extension, Json,
-};
+use axum::{extract::State, http::StatusCode, Extension, Json};
 use serde::Serialize;
 use sqlx::PgPool;
 use uuid::Uuid;
@@ -34,8 +30,16 @@ pub async fn get_bus_lock_balance(
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
     if let Some(lock_data) = lock {
-        let locked = lock_data.locked_amount.to_string().parse::<f64>().unwrap_or(0.0);
-        let required = lock_data.required_amount.to_string().parse::<f64>().unwrap_or(0.0);
+        let locked = lock_data
+            .locked_amount
+            .to_string()
+            .parse::<f64>()
+            .unwrap_or(0.0);
+        let required = lock_data
+            .required_amount
+            .to_string()
+            .parse::<f64>()
+            .unwrap_or(0.0);
         let deficit = (required - locked).max(0.0);
 
         Ok(Json(BusLockBalance {

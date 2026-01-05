@@ -28,10 +28,10 @@ impl RateLimiter {
     fn is_allowed(&self, key: &str) -> bool {
         let mut requests = self.requests.lock().unwrap();
         let now = Instant::now();
-        
+
         let times = requests.entry(key.to_string()).or_insert_with(Vec::new);
         times.retain(|&t| now.duration_since(t) < self.window);
-        
+
         if times.len() < self.max_requests {
             times.push(now);
             true

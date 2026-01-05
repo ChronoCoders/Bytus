@@ -45,7 +45,10 @@ pub fn create_router(pool: PgPool) -> Router {
         )
         .route("/api/payments", post(handlers::payments::create_payment))
         .route("/api/payments/:id", get(handlers::payments::get_payment))
-        .route("/api/bus-lock/balance", get(handlers::bus_lock::get_bus_lock_balance))
+        .route(
+            "/api/bus-lock/balance",
+            get(handlers::bus_lock::get_bus_lock_balance),
+        )
         .route_layer(middleware::from_fn_with_state(
             pool.clone(),
             mw::auth::auth_middleware,

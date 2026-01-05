@@ -1,7 +1,7 @@
+use crate::handlers::auth::Claims;
 use axum::{extract::State, Extension, Json};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
-use crate::handlers::auth::Claims;
 
 #[derive(Serialize, Deserialize)]
 pub struct DashboardOverview {
@@ -25,7 +25,7 @@ pub async fn get_dashboard_overview(
          FROM transactions 
          WHERE user_id = $1 
          AND status = 'settled' 
-         AND created_at >= date_trunc('month', CURRENT_DATE)"
+         AND created_at >= date_trunc('month', CURRENT_DATE)",
     )
     .bind(user_id)
     .fetch_one(&pool)
@@ -37,7 +37,7 @@ pub async fn get_dashboard_overview(
         "SELECT COUNT(*) 
          FROM transactions 
          WHERE user_id = $1 
-         AND created_at >= date_trunc('month', CURRENT_DATE)"
+         AND created_at >= date_trunc('month', CURRENT_DATE)",
     )
     .bind(user_id)
     .fetch_one(&pool)
@@ -49,7 +49,7 @@ pub async fn get_dashboard_overview(
         "SELECT CAST(COALESCE(SUM(amount), 0) AS DOUBLE PRECISION)
          FROM transactions 
          WHERE user_id = $1 
-         AND status = 'pending'"
+         AND status = 'pending'",
     )
     .bind(user_id)
     .fetch_one(&pool)
@@ -60,7 +60,7 @@ pub async fn get_dashboard_overview(
     let bus_lock: Option<(f64, f64)> = sqlx::query_as(
         "SELECT CAST(locked_amount AS DOUBLE PRECISION), CAST(required_amount AS DOUBLE PRECISION)
          FROM bus_locks 
-         WHERE user_id = $1"
+         WHERE user_id = $1",
     )
     .bind(user_id)
     .fetch_optional(&pool)

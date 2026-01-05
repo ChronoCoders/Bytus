@@ -44,8 +44,14 @@ pub async fn get_positions(
             name: row.asset.clone(),
             protocol: row.protocol.unwrap_or_else(|| "Unknown".to_string()),
             balance: row.balance.to_string(),
-            value: row.usd_value.map(|v| v.to_string().parse::<f64>().unwrap_or(0.0)).unwrap_or(0.0),
-            apy: row.apy.map(|a| format!("{}%", a)).unwrap_or_else(|| "0.0%".to_string()),
+            value: row
+                .usd_value
+                .map(|v| v.to_string().parse::<f64>().unwrap_or(0.0))
+                .unwrap_or(0.0),
+            apy: row
+                .apy
+                .map(|a| format!("{}%", a))
+                .unwrap_or_else(|| "0.0%".to_string()),
         })
         .collect();
 
@@ -75,16 +81,32 @@ pub async fn get_portfolio(
         .iter()
         .map(|row| TreasuryPosition {
             name: row.asset.clone(),
-            protocol: row.protocol.clone().unwrap_or_else(|| "Unknown".to_string()),
+            protocol: row
+                .protocol
+                .clone()
+                .unwrap_or_else(|| "Unknown".to_string()),
             balance: row.balance.to_string(),
-            value: row.usd_value.as_ref().map(|v| v.to_string().parse::<f64>().unwrap_or(0.0)).unwrap_or(0.0),
-            apy: row.apy.as_ref().map(|a| format!("{}%", a)).unwrap_or_else(|| "0.0%".to_string()),
+            value: row
+                .usd_value
+                .as_ref()
+                .map(|v| v.to_string().parse::<f64>().unwrap_or(0.0))
+                .unwrap_or(0.0),
+            apy: row
+                .apy
+                .as_ref()
+                .map(|a| format!("{}%", a))
+                .unwrap_or_else(|| "0.0%".to_string()),
         })
         .collect();
 
     let total_value: f64 = rows
         .iter()
-        .map(|row| row.usd_value.as_ref().map(|v| v.to_string().parse::<f64>().unwrap_or(0.0)).unwrap_or(0.0))
+        .map(|row| {
+            row.usd_value
+                .as_ref()
+                .map(|v| v.to_string().parse::<f64>().unwrap_or(0.0))
+                .unwrap_or(0.0)
+        })
         .sum();
 
     Ok(Json(TreasuryPortfolio {
