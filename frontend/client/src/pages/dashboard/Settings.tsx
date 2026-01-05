@@ -1,227 +1,221 @@
-import { useState } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Lock, Loader2, Building2, CheckCircle2, Users } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect } from "react";
+import { DashboardLayout } from "../../components/dashboard/DashboardLayout";
+import { Card } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Label } from "../../components/ui/label";
+import { Badge } from "../../components/ui/badge";
+import { api } from "../../lib/api";
+import { useNavigate } from "wouter";
+import { useToast } from "../../hooks/use-toast";
 
-export default function SettingsPage() {
+interface UserSettings {
+  company_name: string;
+  email: string;
+  website: string;
+  registration_number: string;
+  kyc_status: string;
+}
+
+export function Settings() {
+  const [, setLocation] = useNavigate();
   const { toast } = useToast();
-  const [isSaving, setIsSaving] = useState(false);
+  const [settings, setSettings] = useState<UserSettings>({
+    company_name: "",
+    email: "",
+    website: "",
+    registration_number: "",
+    kyc_status: "pending",
+  });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSave = () => {
-    setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
-      toast({
-        title: "Settings Saved",
-        description: "Your business profile has been updated.",
-      });
-    }, 1500);
+  const loadSettings = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await api.getSettings();
+      setSettings(data);
+    } catch (err: any) {
+      if (err.message?.includes("401") || err.message?.includes("Unauthorized")) {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user");
+        setLocation("/login");
+      } else {
+        setError(err.message || "Failed to load settings");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      await api.updateSettings({
+        company_name: settings.company_name,
+        email: settings.email,
+        website: settings.website,
+      });
+      toast({
+        title: "Success",
+        description: "Settings updated successfully",
+      });
+    } catch (err: any) {
+      toast({
+        title: "Error",
+        description: err.message || "Failed to update settings",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const getKycStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "verified":
+        return "bg-green-500/10 text-green-500";
+      case "pending":
+        return "bg-yellow-500/10 text-yellow-500";
+      case "rejected":
+        return "bg-red-500/10 text-red-500";
+      default:
+        return "bg-gray-500/10 text-gray-500";
+    }
+  };
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-12 text-muted-foreground">
+          Loading settings...
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-12 text-red-500">
+          {error}
+          <Button
+            variant="outline"
+            className="mt-4"
+            onClick={loadSettings}
+          >
+            Retry
+          </Button>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Settings
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Manage business profile, team members, and compliance.
+          <h1 className="text-3xl font-bold">Settings</h1>
+          <p className="text-muted-foreground">
+            Manage your account and business information
           </p>
         </div>
 
-        <div className="grid gap-8">
-          {/* Business Profile Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-muted-foreground" />
-                Business Profile
-              </CardTitle>
-              <CardDescription>
-                Company details and public information.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center gap-6">
-                <div className="w-20 h-20 bg-primary/10 rounded-lg flex items-center justify-center text-primary text-2xl font-bold border border-border">
-                  AC
-                </div>
+        <Card className="p-6">
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-semibold mb-4">Company Profile</h2>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <h3 className="font-bold text-lg">Acme Corp Inc.</h3>
-                  <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
-                    <CheckCircle2 className="w-4 h-4" />
-                    Verified Business
-                  </div>
+                  <Label htmlFor="company-name">Company Name</Label>
+                  <Input
+                    id="company-name"
+                    value={settings.company_name}
+                    onChange={(e) =>
+                      setSettings({ ...settings, company_name: e.target.value })
+                    }
+                  />
                 </div>
-              </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="companyName">Company Name</Label>
-                  <Input
-                    id="companyName"
-                    defaultValue="Acme Corp Inc."
-                    autoComplete="organization"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="regNumber">Registration Number</Label>
-                  <Input
-                    id="regNumber"
-                    defaultValue="US-DE-882910"
-                    disabled
-                    className="bg-muted"
-                    autoComplete="off"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Business Email</Label>
+                  <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
-                    defaultValue="finance@acmecorp.com"
                     type="email"
-                    autoComplete="email"
+                    value={settings.email}
+                    onChange={(e) =>
+                      setSettings({ ...settings, email: e.target.value })
+                    }
                   />
                 </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="website">Website</Label>
                   <Input
                     id="website"
-                    defaultValue="https://acmecorp.com"
-                    autoComplete="url"
+                    type="url"
+                    placeholder="https://example.com"
+                    value={settings.website}
+                    onChange={(e) =>
+                      setSettings({ ...settings, website: e.target.value })
+                    }
                   />
                 </div>
-              </div>
 
-              <div className="flex justify-end">
-                <Button
-                  onClick={handleSave}
-                  disabled={isSaving}
-                  className="min-w-[120px]"
-                >
-                  {isSaving ? (
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                  ) : null}
-                  {isSaving ? "Saving..." : "Save Changes"}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Team Members */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="w-5 h-5 text-muted-foreground" />
-                    Team Members
-                  </CardTitle>
-                  <CardDescription>
-                    Manage access to your dashboard.
-                  </CardDescription>
-                </div>
-                <Button variant="outline" size="sm">
-                  Invite Member
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  {
-                    name: "Alexandra Chen",
-                    email: "alexandra@acmecorp.com",
-                    role: "Owner",
-                  },
-                  {
-                    name: "Marcus Thorne",
-                    email: "marcus@acmecorp.com",
-                    role: "Admin",
-                  },
-                  {
-                    name: "David Kim",
-                    email: "david@acmecorp.com",
-                    role: "Viewer",
-                  },
-                ].map((member) => (
-                  <div
-                    key={member.email}
-                    className="flex items-center justify-between p-2 hover:bg-muted/50 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-medium">{member.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {member.email}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-xs font-medium bg-muted px-2 py-1 rounded">
-                        {member.role}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Security Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lock className="w-5 h-5 text-muted-foreground" />
-                Security & Compliance
-              </CardTitle>
-              <CardDescription>
-                Protect your account and view compliance status.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between py-4">
-                <div>
-                  <h4 className="font-medium">Two-Factor Authentication</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Required for all team members.
+                <div className="space-y-2">
+                  <Label htmlFor="registration-number">
+                    Registration Number
+                  </Label>
+                  <Input
+                    id="registration-number"
+                    value={settings.registration_number}
+                    disabled
+                    className="bg-muted"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Contact support to update this field
                   </p>
                 </div>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">KYC Status</h2>
+                <Badge className={getKycStatusColor(settings.kyc_status)}>
+                  {settings.kyc_status}
+                </Badge>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                {settings.kyc_status === "verified"
+                  ? "Your account is fully verified. You have access to all features."
+                  : settings.kyc_status === "pending"
+                  ? "Your verification is being reviewed. This typically takes 1-2 business days."
+                  : "Please contact support for more information about your verification status."}
+              </p>
+              {settings.kyc_status !== "verified" && (
                 <Button variant="outline" disabled>
-                  Enforced
+                  Upload Documents
                 </Button>
-              </div>
-              <Separator />
-              <div className="flex items-center justify-between py-4">
-                <div>
-                  <h4 className="font-medium">KYC/KYB Status</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Level 3 - Unlimited Processing
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 text-green-600 font-bold text-sm">
-                  <CheckCircle2 className="w-4 h-4" /> Verified
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-4 pt-6 border-t">
+              <Button variant="outline" onClick={loadSettings}>
+                Cancel
+              </Button>
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </div>
+        </Card>
       </div>
     </DashboardLayout>
   );

@@ -1,183 +1,181 @@
-import { useState } from "react";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  BadgeDollarSign,
-  Landmark,
-  TrendingUp,
-  ArrowRightLeft,
-  Briefcase,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { DashboardActions } from "@/components/dashboard/Actions";
-import { Button } from "@/components/ui/button";
-import { TreasuryLockStatus } from "@/components/dashboard/TreasuryLockStatus";
+import { useState, useEffect } from "react";
+import { DashboardLayout } from "../../components/dashboard/DashboardLayout";
+import { Card } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Badge } from "../../components/ui/badge";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { api } from "../../lib/api";
+import { useNavigate } from "wouter";
 
-const initialAssets = [
-  {
-    name: "USDC Treasury",
-    protocol: "Compound V3",
-    balance: "250,000",
-    value: 250000.0,
-    apy: "4.8%",
-    isPositive: true,
-    icon: BadgeDollarSign,
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    name: "Base L2 Liquidity",
-    protocol: "Uniswap V3",
-    balance: "45.2 ETH",
-    value: 125400.0,
-    apy: "12.5%",
-    isPositive: true,
-    icon: TrendingUp,
-    color: "bg-purple-100 text-purple-600",
-  },
-  {
-    name: "Operational Float",
-    protocol: "Internal Vault",
-    balance: "185,000 USD",
-    value: 185000.0,
-    apy: "0.0%",
-    isPositive: false,
-    icon: Landmark,
-    color: "bg-green-100 text-green-600",
-  },
-  {
-    name: "BUS Reserve",
-    protocol: "Staking Contract",
-    balance: "50,000 BUS",
-    value: 62500.0,
-    apy: "8.2%",
-    isPositive: true,
-    icon: Briefcase,
-    color: "bg-orange-100 text-orange-600",
-  },
-];
+interface TreasuryPosition {
+  name: string;
+  protocol: string;
+  balance: string;
+  value: number;
+  apy: string;
+}
 
-export default function TreasuryPage() {
-  const [assets] = useState(initialAssets);
+export function Treasury() {
+  const [, setLocation] = useNavigate();
+  const [positions, setPositions] = useState<TreasuryPosition[]>([]);
+  const [totalValue, setTotalValue] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Total Net Worth is now derived state
-  const totalNetWorth = assets.reduce((acc, curr) => acc + curr.value, 0);
+  const loadTreasury = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const [positionsData, portfolioData] = await Promise.all([
+        api.getTreasuryPositions(),
+        api.getTreasuryPortfolio(),
+      ]);
+      setPositions(positionsData);
+      setTotalValue(portfolioData.total_value);
+    } catch (err: any) {
+      if (err.message?.includes("401") || err.message?.includes("Unauthorized")) {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user");
+        setLocation("/login");
+      } else {
+        setError(err.message || "Failed to load treasury data");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadTreasury();
+  }, []);
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(value);
+  };
+
+  const parseAPY = (apy: string): number => {
+    return parseFloat(apy.replace("%", "")) || 0;
+  };
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Treasury Management
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Monitor corporate crypto holdings and DeFi positions.
+            <h1 className="text-3xl font-bold">Treasury Management</h1>
+            <p className="text-muted-foreground">
+              Manage digital assets across multiple protocols
             </p>
           </div>
-          <Button className="gap-2">
-            <ArrowRightLeft className="w-4 h-4" /> Rebalance Portfolio
-          </Button>
+          <Button disabled>Deploy Capital</Button>
         </div>
 
-        {/* Total Balance Card */}
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card className="shadow-xl relative overflow-hidden md:col-span-2">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl pointer-events-none" />
-            <CardContent className="p-8 relative z-10">
-              <p className="text-muted-foreground font-medium mb-2">
-                Total Treasury Value
-              </p>
-              <h2 className="text-4xl font-bold mb-6 text-foreground">
-                $
-                {totalNetWorth.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </h2>
-              <div className="flex gap-3">
-                <DashboardActions />
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="space-y-6">
-            <TreasuryLockStatus lockedAmount={62500} totalAum={totalNetWorth} />
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Yield Performance
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600 mb-1">
-                  5.2%
+        {loading ? (
+          <div className="text-center py-12 text-muted-foreground">
+            Loading treasury data...
+          </div>
+        ) : error ? (
+          <div className="text-center py-12 text-red-500">
+            {error}
+            <Button
+              variant="outline"
+              className="mt-4"
+              onClick={loadTreasury}
+            >
+              Retry
+            </Button>
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-6 md:grid-cols-3">
+              <Card className="p-6">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Total Value</p>
+                  <p className="text-3xl font-bold">
+                    {formatCurrency(totalValue)}
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  +$2,450 est. monthly revenue
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Assets List */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold text-foreground">
-            Active Positions
-          </h3>
-          <div className="grid gap-4">
-            {assets.map((asset) => (
-              <Card
-                key={asset.name}
-                className="hover:shadow-md transition-shadow cursor-pointer border-border"
-              >
-                <CardContent className="flex items-center justify-between p-6">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={cn(
-                        "w-12 h-12 rounded-full flex items-center justify-center",
-                        asset.color,
-                      )}
-                    >
-                      <asset.icon className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-foreground">
-                        {asset.name}
-                      </h4>
-                      <p className="text-sm text-muted-foreground">
-                        {asset.protocol} • {asset.balance}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <h4 className="font-bold text-foreground">
-                      $
-                      {asset.value.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </h4>
-                    <p
-                      className={cn(
-                        "text-sm flex items-center justify-end gap-1 font-medium",
-                        asset.apy !== "0.0%"
-                          ? "text-green-600"
-                          : "text-muted-foreground",
-                      )}
-                    >
-                      {asset.apy !== "0.0%" && (
-                        <TrendingUp className="w-3 h-3" />
-                      )}
-                      APY: {asset.apy}
-                    </p>
-                  </div>
-                </CardContent>
               </Card>
-            ))}
-          </div>
-        </div>
+
+              <Card className="p-6">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Positions</p>
+                  <p className="text-3xl font-bold">{positions.length}</p>
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">Avg APY</p>
+                  <p className="text-3xl font-bold">
+                    {positions.length > 0
+                      ? (
+                          positions.reduce(
+                            (sum, p) => sum + parseAPY(p.apy),
+                            0
+                          ) / positions.length
+                        ).toFixed(2)
+                      : "0.00"}
+                    %
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-6">
+              <h2 className="text-xl font-semibold mb-6">Active Positions</h2>
+              {positions.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  No treasury positions yet. Deploy capital to get started.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {positions.map((position, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div className="space-y-1">
+                        <h3 className="font-semibold">{position.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {position.protocol}
+                        </p>
+                      </div>
+                      <div className="text-right space-y-1">
+                        <p className="font-semibold">
+                          {formatCurrency(position.value)}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm text-muted-foreground">
+                            {position.balance}
+                          </p>
+                          <Badge
+                            variant="outline"
+                            className={
+                              parseAPY(position.apy) > 5
+                                ? "text-green-500"
+                                : ""
+                            }
+                          >
+                            {parseAPY(position.apy) > 5 ? (
+                              <TrendingUp className="mr-1 h-3 w-3" />
+                            ) : (
+                              <TrendingDown className="mr-1 h-3 w-3" />
+                            )}
+                            {position.apy} APY
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </>
+        )}
       </div>
     </DashboardLayout>
   );
