@@ -16,7 +16,7 @@ import {
 import { Label } from "../../components/ui/label";
 import { Plus, Copy, Trash2 } from "lucide-react";
 import { api } from "../../lib/api";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 import { useToast } from "../../hooks/use-toast";
 
 interface ApiKey {
@@ -30,7 +30,7 @@ interface ApiKey {
 }
 
 export function ApiKeys() {
-  const [, setLocation] = useNavigate();
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [loading, setLoading] = useState(true);

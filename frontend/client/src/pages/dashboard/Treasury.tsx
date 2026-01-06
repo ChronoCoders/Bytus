@@ -5,7 +5,7 @@ import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { api } from "../../lib/api";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 
 interface TreasuryPosition {
   name: string;
@@ -16,7 +16,7 @@ interface TreasuryPosition {
 }
 
 export function Treasury() {
-  const [, setLocation] = useNavigate();
+  const [, setLocation] = useLocation();
   const [positions, setPositions] = useState<TreasuryPosition[]>([]);
   const [totalValue, setTotalValue] = useState(0);
   const [loading, setLoading] = useState(true);

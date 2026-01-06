@@ -6,7 +6,7 @@ import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
 import { Badge } from "../../components/ui/badge";
 import { api } from "../../lib/api";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 import { useToast } from "../../hooks/use-toast";
 
 interface UserSettings {
@@ -18,7 +18,7 @@ interface UserSettings {
 }
 
 export function Settings() {
-  const [, setLocation] = useNavigate();
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [settings, setSettings] = useState<UserSettings>({
     company_name: "",

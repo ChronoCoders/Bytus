@@ -13,7 +13,7 @@ import {
 } from "../../components/ui/select";
 import { Search, Download } from "lucide-react";
 import { api } from "../../lib/api";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 
 interface Transaction {
   id: string;
@@ -26,7 +26,7 @@ interface Transaction {
 }
 
 export function Transactions() {
-  const [, setLocation] = useNavigate();
+  const [, setLocation] = useLocation();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
