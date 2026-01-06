@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog";
 import { Label } from "../../components/ui/label";
-import { Plus, Copy, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, Copy, Trash2 } from "lucide-react";
 import { api } from "../../lib/api";
 import { useNavigate } from "wouter";
 import { useToast } from "../../hooks/use-toast";
@@ -191,7 +191,6 @@ export function ApiKeys() {
           </Dialog>
         </div>
 
-        {/* Show Created Key Dialog */}
         <Dialog open={showCreatedKey} onOpenChange={handleCloseCreatedKeyDialog}>
           <DialogContent>
             <DialogHeader>
