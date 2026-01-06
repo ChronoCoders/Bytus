@@ -25,7 +25,7 @@ interface Transaction {
   customer_email: string | null;
 }
 
-export function Transactions() {
+export default function Transactions() {
   const [, setLocation] = useLocation();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);

@@ -15,7 +15,7 @@ interface TreasuryPosition {
   apy: string;
 }
 
-export function Treasury() {
+export default function Treasury() {
   const [, setLocation] = useLocation();
   const [positions, setPositions] = useState<TreasuryPosition[]>([]);
   const [totalValue, setTotalValue] = useState(0);

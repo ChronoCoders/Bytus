@@ -29,7 +29,7 @@ interface ApiKey {
   status: string;
 }
 
-export function ApiKeys() {
+export default function ApiKeys() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [keys, setKeys] = useState<ApiKey[]>([]);

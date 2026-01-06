@@ -17,7 +17,7 @@ interface UserSettings {
   kyc_status: string;
 }
 
-export function Settings() {
+export default function Settings() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [settings, setSettings] = useState<UserSettings>({
